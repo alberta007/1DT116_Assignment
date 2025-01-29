@@ -1,3 +1,5 @@
+arg = 200
+
 .PHONY: clean libpedsim demo
 
 all: libpedsim demo
@@ -24,3 +26,13 @@ submission: clean
 	cp lab3-scenario.xml submit/
 	tar -czvf submission.tar.gz submit
 	rm -rf submit
+
+run:
+	demo/demo scenario.xml 
+
+run_export:
+	demo/demo scenario.xml --export-trace && \
+	python3 visualizer/visualize_export.py export_trace.bin 
+
+run_timing:
+	demo/demo scenario.xml --timing-mode --$(set_mode) --max-steps $(arg)

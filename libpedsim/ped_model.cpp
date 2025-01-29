@@ -41,67 +41,63 @@ void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<T
 	// Set up heatmap (relevant for Assignment 4)
 	setupHeatmapSeq();
 }
-//Utan parallelisering
-// void Ped::Model::tick()
-// {
-// 	// EDIT HERE FOR ASSIGNMENT 1
-// //itererar över alla agents specifierade i setup()
-// //använder klasser från ped_agent.cpp	// for (auto agent: agents) {
-//	//önskade position
-    //    	agent->computeNextDesiredPosition();
-// 	//uppdaterar till beräknade position
-		
-	//  	agent->setX(agent->getDesiredX());
-    //    	agent->setY(agent->getDesiredY());
-    
 
-// 	}
-
-// }
-
-//med openMP parallelisering
 void Ped::Model::tick() {
-// 	// EDIT HERE FOR ASSIGNMENT 1
-// antalet trådar som ska köras samtidigt
-	omp_set_num_threads(8);
 
-// detta används när man paralleliserar med openMP
-	#pragma omp parallel for
-// itererar över alla agents specifierade i setup()
-//använder klasser från ped_agent.cpp
-	for (auto agent: agents) {
-	//önskade position
-        agent->computeNextDesiredPosition();
-	//uppdaterar till beräknade position
-	 	agent->setX(agent->getDesiredX());
-        agent->setY(agent->getDesiredY());
+	switch(implementation) {
+
+		case 2:{
+			// antalet trådar som ska köras samtidigt
+			omp_set_num_threads(8);
+
+			// detta används när man paralleliserar med openMP
+			#pragma omp parallel for default(none) schedule(dynamic) shared(agents)
+			for (auto agent: agents) {
+				//önskade position
+				agent->computeNextDesiredPosition();
+				//uppdaterar till beräknade position
+				agent->setX(agent->getDesiredX());
+				agent->setY(agent->getDesiredY());
+			}
+
+			break;
+		}
+		case 3: {
+			//C++ threads parrallelisering
+			// EDIT HERE FOR ASSIGNMENT 1
+			std::vector<std::thread> threads;
+
+			// Skapa trådar, en för varje agent
+			for (auto& agent : agents) {
+				threads.emplace_back([&]() {
+					//önskade position
+					agent->computeNextDesiredPosition();
+					//uppdaterar till beräknade position
+					agent->setX(agent->getDesiredX());
+					agent->setY(agent->getDesiredY());
+				});
+			}
+
+			// Vänta på att alla trådar blir klara
+			for (auto& thread : threads) {
+				thread.join();
+			}
+
+			break;
+		}
+		case 4: {
+			for (auto agent: agents) {
+				//önskade position
+				agent->computeNextDesiredPosition();
+				//uppdaterar till beräknade position
+				agent->setX(agent->getDesiredX());
+				agent->setY(agent->getDesiredY());
+			}
+
+			break;
+		}		
 	}
-
-} 
-
-// C++ threads parrallelisering
-// void Ped::Model::tick()
-// {
-// 	// EDIT HERE FOR ASSIGNMENT 1
-//     std::vector<std::thread> threads;
-
-//     // Skapa trådar, en för varje agent
-//     for (auto& agent : agents) {
-//         threads.emplace_back([&]() {
-		//önskade position
-//             agent->computeNextDesiredPosition();
-//		//uppdaterar till beräknade position
-//             agent->setX(agent->getDesiredX());
-//             agent->setY(agent->getDesiredY());
-//         });
-//     }
-
-//     // Vänta på att alla trådar blir klara
-//     for (auto& thread : threads) {
-//         thread.join();
-//     }
-// }
-
+}
 ////////////
 /// Everything below here relevant for Assignment 3.
 /// Don't use this for Assignment 1!
