@@ -48,10 +48,10 @@ void Ped::Model::tick() {
 
 		case 2:{
 			// antalet trådar som ska köras samtidigt
-			omp_set_num_threads(8);
+			omp_set_num_threads(2);
 
 			// detta används när man paralleliserar med openMP
-			#pragma omp parallel for default(none) schedule(dynamic) shared(agents)
+			#pragma omp parallel for default(none) schedule(dynamic) 
 			for (auto agent: agents) {
 				//önskade position
 				agent->computeNextDesiredPosition();
@@ -65,22 +65,38 @@ void Ped::Model::tick() {
 		case 3: {
 			//C++ threads parrallelisering
 			// EDIT HERE FOR ASSIGNMENT 1
+			int numThreads = std::thread::hardware_concurrency();
+
 			std::vector<std::thread> threads;
 
+			threads.reserve(numThreads);
+
+			int chunk_size = agents.size() / numThreads;
+			int remainder = agents.size() % numThreads;
 			// Skapa trådar, en för varje agent
-			for (auto& agent : agents) {
-				threads.emplace_back([&]() {
-					//önskade position
-					agent->computeNextDesiredPosition();
-					//uppdaterar till beräknade position
-					agent->setX(agent->getDesiredX());
-					agent->setY(agent->getDesiredY());
-				});
+			auto worker = [=](int startIndex, int endIndex) {
+				for (int i = startIndex; i < endIndex; i++) {
+						Ped::Tagent *agent = agents[i];
+
+						agent->computeNextDesiredPosition();
+						//uppdaterar till beräknade position
+						agent->setX(agent->getDesiredX());
+						agent->setY(agent->getDesiredY());				
+				}
+			};
+
+			int startIndex = 0;
+			for (int i = 0; i < numThreads; i++) {
+				int endIndex = startIndex + chunk_size + (i < remainder ? 1 : 0);
+
+				threads.emplace_back(worker, startIndex, endIndex);
+
+				startIndex = endIndex;
 			}
 
 			// Vänta på att alla trådar blir klara
-			for (auto& thread : threads) {
-				thread.join();
+			for (int i = 0; i < threads.size(); i++) {
+				threads[i].join();
 			}
 
 			break;
