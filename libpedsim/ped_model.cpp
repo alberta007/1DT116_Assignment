@@ -47,15 +47,17 @@ void Ped::Model::tick() {
 	switch(implementation) {
 
 		case 2:{
-			// antalet trådar som ska köras samtidigt
-			omp_set_num_threads(8);
 
-			// detta används när man paralleliserar med openMP
-			#pragma omp parallel for default(none) schedule(dynamic) shared(agents)
+			// Parallelization using OpenMP where each agent is processed in parallel
+			// the number of threads is set using the environment variable OMP_NUM_THREADS
+			// default(none) means that all variables must be explicitly declared as shared or private
+			// schedule(dynamic) means that the work is divided into chunks of work that are distributed to the threads
+			// shared(agents) means that the agents variable is shared among all threads
+			#pragma omp for //parallel for default(none) schedule(static) shared(agents)
 			for (auto agent: agents) {
-				//önskade position
+				// Get the next desired position
 				agent->computeNextDesiredPosition();
-				//uppdaterar till beräknade position
+				// Update the position
 				agent->setX(agent->getDesiredX());
 				agent->setY(agent->getDesiredY());
 			}
@@ -63,28 +65,57 @@ void Ped::Model::tick() {
 			break;
 		}
 		case 3: {
-			//C++ threads parrallelisering
-			// EDIT HERE FOR ASSIGNMENT 1
-			std::vector<std::thread> threads;
+			// C++ threads parallelization
+			// printf("Using C++ threads\n");
+			
+			// 1. Determine how many threads to use
+			const char* envstr = std::getenv("CXX_NUM_THREADS");
+			int numThreads = 1; // default
+			if(envstr != nullptr) {
+				numThreads = std::stoi(envstr); 
+			}
+			// printf("Using %d threads\n", numThreads);
+			// 2. Calculate the total number of agents
+			int totalAgents = static_cast<int>(agents.size());
 
-			// Skapa trådar, en för varje agent
-			for (auto& agent : agents) {
-				threads.emplace_back([&]() {
-					//önskade position
-					agent->computeNextDesiredPosition();
-					//uppdaterar till beräknade position
-					agent->setX(agent->getDesiredX());
-					agent->setY(agent->getDesiredY());
-				});
+			// 3. Limit the number of threads so we don't spawn more threads than agents
+			numThreads = std::min(numThreads, totalAgents);
+
+			// 4. Divide work among the threads
+			int blockSize = totalAgents / numThreads; 
+			int remainder = totalAgents % numThreads; 
+			
+			// We'll store our thread objects here
+			std::vector<std::thread> threads;
+			threads.reserve(numThreads);
+
+			// 5. Worker function to process a subset of agents
+			// Using [=] to capture by value is often safer, but [&, this] could also work
+			auto worker = [=](int start, int end) {
+				for (int i = start; i < end; i++) {
+					agents[i]->computeNextDesiredPosition();
+					agents[i]->setX(agents[i]->getDesiredX());
+					agents[i]->setY(agents[i]->getDesiredY());
+				}
+			};
+
+			// 6. Create the threads
+			int startIndex = 0;
+			for (int t = 0; t < numThreads; t++) {
+				int endIndex = startIndex + blockSize + (t < remainder ? 1 : 0);
+				threads.emplace_back(worker, startIndex, endIndex);
+				startIndex = endIndex;
 			}
 
-			// Vänta på att alla trådar blir klara
-			for (auto& thread : threads) {
+			// 7. Join the threads to ensure all work completes
+			for (auto &thread : threads) {
 				thread.join();
 			}
 
 			break;
 		}
+
+
 		case 4: {
 			for (auto agent: agents) {
 				//önskade position
@@ -93,6 +124,7 @@ void Ped::Model::tick() {
 				agent->setX(agent->getDesiredX());
 				agent->setY(agent->getDesiredY());
 			}
+			// printf("Using seq\n");
 
 			break;
 		}		

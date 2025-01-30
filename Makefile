@@ -35,4 +35,25 @@ run_export:
 	python3 visualizer/visualize_export.py export_trace.bin 
 
 run_timing:
-	demo/demo scenario.xml --timing-mode --$(set_mode) --max-steps $(arg)
+	demo/demo hugeScenario.xml --timing-mode --$(set_mode) --max-steps $(arg)
+
+# Example: run multiple tests with different steps and threads
+# run_timing: 
+#     # 1) Baseline (serial)
+#     echo "Running serial for baseline..."
+#     demo/demo scenario.xml --timing-mode --set_mode=seq --max-steps 1000 > serial_1000.log
+    
+#     # 2) OpenMP with different thread counts
+#     for t in 1 2 4 8; do \
+#       echo "Running OpenMP with $$t threads..."; \
+#       OMP_NUM_THREADS=$$t demo/demo scenario.xml --timing-mode --set_mode=o --max-steps 1000 > openmp_1000_$$t.log; \
+#     done
+    
+#     # 3) C++ Threads with different thread counts
+#     for t in 1 2 4 8; do \
+#       echo "Running C++ Threads with $$t threads..."; \
+#       CXX_NUM_THREADS=$$t demo/demo scenario.xml --timing-mode --set_mode=p --max-steps 1000 > threads_1000_$$t.log; \
+#     done
+    
+#     echo "All runs complete."
+
