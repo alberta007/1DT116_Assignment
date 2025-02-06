@@ -14,7 +14,7 @@ using namespace std;
 
 // Sets up the heatmap
 void Ped::Model::setupHeatmapSeq()
-{
+{	
 	int *hm = (int*)calloc(SIZE*SIZE, sizeof(int));
 	int *shm = (int*)malloc(SCALED_SIZE*SCALED_SIZE*sizeof(int));
 	int *bhm = (int*)malloc(SCALED_SIZE*SCALED_SIZE*sizeof(int));
@@ -33,6 +33,31 @@ void Ped::Model::setupHeatmapSeq()
 		scaled_heatmap[i] = shm + SCALED_SIZE*i;
 		blurred_heatmap[i] = bhm + SCALED_SIZE*i;
 	}
+}
+
+
+// Frees the allocated memory for the heatmap
+void Ped::Model::freeHeatmapMemory() {
+    // Free heatmap
+    if (heatmap != nullptr) {
+        free(heatmap[0]);  // Free the contiguous memory block
+        free(heatmap);
+        heatmap = nullptr;
+    }
+
+    // Free scaled_heatmap
+    if (scaled_heatmap != nullptr) {
+        free(scaled_heatmap[0]);  // Free the contiguous memory block
+        free(scaled_heatmap);
+        scaled_heatmap = nullptr;
+    }
+
+    // Free blurred_heatmap
+    if (blurred_heatmap != nullptr) {
+        free(blurred_heatmap[0]);  // Free the contiguous memory block
+        free(blurred_heatmap);
+        blurred_heatmap = nullptr;
+    }
 }
 
 // Updates the heatmap according to the agent positions

@@ -31,7 +31,7 @@ run:
 	demo/demo scenario.xml 
 
 run_export:
-	demo/demo scenario.xml --export-trace --p && \
+	demo/demo scenario.xml --export-trace --simd && \
 	python3 visualizer/visualize_export.py export_trace.bin 
 
 run_timing:

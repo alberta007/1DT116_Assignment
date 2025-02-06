@@ -1,5 +1,5 @@
-SOURCES=$(filter-out QTSimulation.cpp MainWindow.cpp ViewAgent.cpp, $(shell echo *.cpp))
-OBJECTS=$(filter-out QTSimulation.o MainWindow.o ViewAgent.o, $(SOURCES:.cpp=.o))
+SOURCES=$(filter-out QTSimulation.cpp MainWindow.cpp MainWindowSoA.cpp ViewAgent.cpp ViewAgentSoA.cpp, $(shell echo *.cpp))
+OBJECTS=$(filter-out QTSimulation.o MainWindow.o MainWindowSoA.o ViewAgentSoA.o ViewAgent.o, $(SOURCES:.cpp=.o))
 
 LIBPEDSOURCES=$(shell echo ../libpedsim/*.cpp)
 LIBPEDOBJECTS=$(LIBPEDSOURCES:.cpp=.o)

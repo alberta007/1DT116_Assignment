@@ -48,6 +48,9 @@ namespace Ped {
 		// Adds a new waypoint to reach for this agent
 		void addWaypoint(Twaypoint* wp);
 
+		// Returns the next destination to visit
+		Twaypoint* getNextDestination();
+
 	private:
 		Tagent() {};
 
@@ -71,8 +74,7 @@ namespace Ped {
 		// Internal init function 
 		void init(int posX, int posY);
 
-		// Returns the next destination to visit
-		Twaypoint* getNextDestination();
+		
 	};
 }
 

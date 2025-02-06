@@ -11,6 +11,7 @@
 #undef max
 #include "ped_model.h"
 #include "ParseScenario.h"
+#include "ExportSimulationSoA.h"
 
 #include <thread>
 
@@ -187,7 +188,12 @@ int main(int argc, char*argv[]) {
             {
                 Ped::Model model;
                 ParseScenario parser(scenefile);
-                model.setup(parser.getAgents(), parser.getWaypoints(), implementation_to_test);
+                if (implementation_to_test == Ped::VECTOR) {
+                    model.setup(parser.getAgentsSoA(), parser.getWaypointsSoA(), implementation_to_test);
+                }
+                else{
+                    model.setup(parser.getAgents(), parser.getWaypoints(), implementation_to_test);
+                }
                 Simulation *simulation = new TimingSimulation(model, max_steps);
                 // Simulation mode to use when profiling (without any GUI)
                 std::cout << "Running target version...\n";
@@ -203,24 +209,44 @@ int main(int argc, char*argv[]) {
         } else if (export_trace) {
                 Ped::Model model;
                 ParseScenario parser(scenefile);
-                model.setup(parser.getAgents(), parser.getWaypoints(), implementation_to_test);
+                if (implementation_to_test == Ped::VECTOR) {
+                    model.setup(parser.getAgentsSoA(), parser.getWaypointsSoA(), implementation_to_test);
+                    Simulation *simulation = new ExportSimulationSoA(model, max_steps, export_trace_file);
+                     std::cout << "Running Export Tracer...\n";
+                    auto start = std::chrono::steady_clock::now();
+                    simulation->runSimulation();
+                    auto duration_target = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::steady_clock::now() - start);
+                    float fps = ((float)simulation->getTickCount()) / ((float)duration_target.count())*1000.0;
+                    cout << "Time: " << duration_target.count() << " milliseconds, " << fps << " Frames Per Second." << std::endl;
 
-                Simulation *simulation = new ExportSimulation(model, max_steps, export_trace_file);
+                    delete simulation;
+                }
+                else{
+                    model.setup(parser.getAgents(), parser.getWaypoints(), implementation_to_test);
+                    Simulation *simulation = new ExportSimulation(model, max_steps, export_trace_file);
+                    std::cout << "Running Export Tracer...\n";
+                    auto start = std::chrono::steady_clock::now();
+                    simulation->runSimulation();
+                    auto duration_target = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::steady_clock::now() - start);
+                    float fps = ((float)simulation->getTickCount()) / ((float)duration_target.count())*1000.0;
+                    cout << "Time: " << duration_target.count() << " milliseconds, " << fps << " Frames Per Second." << std::endl;
 
-                std::cout << "Running Export Tracer...\n";
-                auto start = std::chrono::steady_clock::now();
-                simulation->runSimulation();
-                auto duration_target = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::steady_clock::now() - start);
-                float fps = ((float)simulation->getTickCount()) / ((float)duration_target.count())*1000.0;
-                cout << "Time: " << duration_target.count() << " milliseconds, " << fps << " Frames Per Second." << std::endl;
+                    delete simulation;
+                }
 
-                delete simulation;
+
+               ;
 #ifndef NOQT
         } else {
             // Graphics version
             Ped::Model model;
             ParseScenario parser(scenefile);
-            model.setup(parser.getAgents(), parser.getWaypoints(), implementation_to_test);
+            if (implementation_to_test == Ped::VECTOR) {
+                    model.setup(parser.getAgentsSoA(), parser.getWaypointsSoA(), implementation_to_test);
+                }
+                else{
+                    model.setup(parser.getAgents(), parser.getWaypoints(), implementation_to_test);
+                }
 
             QApplication app(argc, argv);
             MainWindow mainwindow(model);

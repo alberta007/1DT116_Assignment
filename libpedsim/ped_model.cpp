@@ -19,6 +19,12 @@
 #endif
 
 #include <stdlib.h>
+#include "soa_agent.h"
+#include <immintrin.h>
+#include <cmath>
+
+#include "soa_tick.h"
+
 
 void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario, IMPLEMENTATION implementation)
 {
@@ -42,11 +48,42 @@ void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<T
 	setupHeatmapSeq();
 }
 
+// Setup for SIMD implementation
+void Ped::Model::setup(const AgentsSoA &agentsSoA,
+                         const WaypointsSoA &waypointsSoA,
+                         IMPLEMENTATION implementation)
+{
+#ifndef NOCUDA
+    cuda_test();
+#else
+    std::cout << "Not compiled for CUDA" << std::endl;
+#endif
+
+    // Store the SoA representation directly.
+    this->agentsSoA = agentsSoA;
+	this->waypointsSoA = waypointsSoA;
+
+    // Store the chosen implementation.
+    this->implementation = implementation;
+
+    // Set up heatmap.
+    setupHeatmapSeq();
+}
+
+
+
 void Ped::Model::tick() {
 
 	switch(implementation) {
 
-		case 2:{
+		case VECTOR: {
+			// Call the SoA implementation of tick (in soa_tick.cpp)
+			tickSoA(agentsSoA, waypointsSoA);
+
+			break;
+		}
+
+		case OMP:{
 
 			// Parallelization using OpenMP where each agent is processed in parallel
 			// the number of threads is set using the environment variable OMP_NUM_THREADS
@@ -64,7 +101,7 @@ void Ped::Model::tick() {
 
 			break;
 		}
-		case 3: {
+		case PTHREAD: {
 			// C++ threads parallelization
 			// printf("Using C++ threads\n");
 			
@@ -116,7 +153,7 @@ void Ped::Model::tick() {
 		}
 
 
-		case 4: {
+		case SEQ: {
 			for (auto agent: agents) {
 				//önskade position
 				agent->computeNextDesiredPosition();
@@ -205,8 +242,10 @@ void Ped::Model::cleanup() {
 	// Nothing to do here right now. 
 }
 
+
 Ped::Model::~Model()
 {
-	std::for_each(agents.begin(), agents.end(), [](Ped::Tagent *agent){delete agent;});
-	std::for_each(destinations.begin(), destinations.end(), [](Ped::Twaypoint *destination){delete destination; });
+
+	freeHeatmapMemory();
+
 }

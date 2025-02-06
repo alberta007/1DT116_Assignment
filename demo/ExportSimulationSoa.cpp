@@ -1,39 +1,35 @@
-#include "ExportSimulation.h"
-
+#include "ExportSimulationSoA.h"
 #include <cstdint> // for int16_t and int32_t
 
 using namespace std;
 
-ExportSimulation::ExportSimulation(Ped::Model &model_, int maxSteps,
-        std::string outputFilename_) : Simulation(model_, maxSteps), outputFilename(outputFilename_)
+ExportSimulationSoA::ExportSimulationSoA(Ped::Model &model_, int maxSteps, std::string outputFilename_) 
+    : Simulation(model_, maxSteps), outputFilename(outputFilename_)
 {
     file = std::ofstream(outputFilename.c_str(), std::ios::binary);
     file.write(reinterpret_cast<const char*>(&maxSimulationSteps), sizeof(maxSimulationSteps));
 }
 
-ExportSimulation::~ExportSimulation() {
+ExportSimulationSoA::~ExportSimulationSoA() {
     file.seekp(0, std::ios::beg);
     file.write(reinterpret_cast<const char*>(&tickCounter), sizeof(tickCounter));
     file.close();
 }
 
-void ExportSimulation::serialize()
+void ExportSimulationSoA::serialize()
 {
-    
-    const std::vector<Ped::Tagent*>& agents = model.getAgents();
-    size_t num_agents = agents.size();
+    const AgentsSoA& agentsSoA = model.getAgentsSoA();
+    size_t num_agents = agentsSoA.x.size();
     file.write(reinterpret_cast<const char*>(&num_agents), sizeof(num_agents));
 
-    for (const auto &agent : agents) {
-        int16_t x = static_cast<int16_t>(agent->getX());
-        int16_t y = static_cast<int16_t>(agent->getY());
+    for (size_t i = 0; i < num_agents; ++i) {
+        int16_t x = static_cast<int16_t>(agentsSoA.x[i]);
+        int16_t y = static_cast<int16_t>(agentsSoA.y[i]);
 
         file.write(reinterpret_cast<const char *>(&x), sizeof(x));
         file.write(reinterpret_cast<const char *>(&y), sizeof(y));
     }
 
-    //size_t heatmap_elements = model.getHeatmapSize();
-    //file.write(reinterpret_cast<const char*>(&heatmap_elements), sizeof(heatmap_elements));
     int16_t height = HEATMAP_HEIGHT;
     int16_t width = HEATMAP_WIDTH;
     const int* const* heatmap = model.getHeatmap();
@@ -51,7 +47,7 @@ void ExportSimulation::serialize()
     file.flush();
 }
 
-void ExportSimulation::runSimulation()
+void ExportSimulationSoA::runSimulation()
 {
     for (int i = 0; i < maxSimulationSteps; i++) {
         tickCounter++;

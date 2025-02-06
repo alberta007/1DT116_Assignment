@@ -17,6 +17,8 @@
 #include <set>
 #include <string>
 #include <cstdlib>
+#include "soa_agent.h"
+#include "waypoints_soa.h"
 
 using namespace std;
 using namespace tinyxml2;
@@ -26,19 +28,36 @@ class ParseScenario
 public:
 	ParseScenario() {}
 	ParseScenario(std::string filename, bool verbose = false);
-	~ParseScenario() {}
+	~ParseScenario();
 
 	// returns the collection of agents defined by this scenario
 	vector<Ped::Tagent*> getAgents() const;
 
+	// returns the collection of agents defined by this scenario
+	const AgentsSoA getAgentsSoA() const;
+
 	// contains all defined waypoints
 	vector<Ped::Twaypoint*> getWaypoints();
+
+
+    // New accessor to the WaypointsSoA
+    const WaypointsSoA& getWaypointsSoA() const {
+        return waypointsSoA;
+    }
 
 private:
 	XMLDocument doc;
 
 	// final collection of all created agents
 	vector<Ped::Tagent*> agents;
+	
+	// temporary collection of agents used to
+	 AgentsSoA agentsSoA; // SoA for agents
+
+	// SoA for waypoints
+    WaypointsSoA waypointsSoA;
+    // A map from waypoint string ID -> index in waypointsSoA
+    std::map<std::string, int> waypointIndexById;
 
 	// temporary collection of agents used to
 	// keep track of all agents that are generated

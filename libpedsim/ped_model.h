@@ -16,6 +16,8 @@
 #include <set>
 
 #include "ped_agent.h"
+#include "soa_agent.h"
+#include "waypoints_soa.h"
 
 namespace Ped{
 	class Tagent;
@@ -30,12 +32,17 @@ namespace Ped{
 
 		// Sets everything up
 		void setup(std::vector<Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario,IMPLEMENTATION implementation);
+
+		void setup(const AgentsSoA& agentsSoA,const WaypointsSoA &waypointsSoA, IMPLEMENTATION implementation);
 		
 		// Coordinates a time step in the scenario: move all agents by one step (if applicable).
 		void tick();
 
 		// Returns the agents of this scenario
 		const std::vector<Tagent*>& getAgents() const { return agents; };
+
+		// Returns the agents of this scenario in SoA format
+		const AgentsSoA& getAgentsSoA() const { return agentsSoA; };
 
 		// Adds an agent to the tree structure
 		void placeAgent(const Ped::Tagent *a);
@@ -57,6 +64,12 @@ namespace Ped{
 
 		// The agents in this scenario
 		std::vector<Tagent*> agents;
+
+		// For SoA-based (SIMD) implementation:
+    	AgentsSoA agentsSoA;
+
+		// For SoA-based (SIMD) implementation:
+		WaypointsSoA waypointsSoA;
 
 		// The waypoints in this scenario
 		std::vector<Twaypoint*> destinations;
@@ -89,6 +102,7 @@ namespace Ped{
 		int ** blurred_heatmap;
 
 		void setupHeatmapSeq();
+		void freeHeatmapMemory();
 		void updateHeatmapSeq();
 	};
 }

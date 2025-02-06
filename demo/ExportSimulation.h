@@ -5,9 +5,9 @@
 #include <string>
 #include <fstream>
 
-#define HEATMAP_WIDTH 160 * 5
-#define HEATMAP_HEIGHT 120 * 5
-#define HEATMAP_SKIP 5
+    #define HEATMAP_WIDTH 160 * 5
+    #define HEATMAP_HEIGHT 120 * 5
+    #define HEATMAP_SKIP 5
 
 class ExportSimulation : public Simulation {
     public:
