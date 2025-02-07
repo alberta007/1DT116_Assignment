@@ -25,7 +25,7 @@
 
 #include "soa_tick.h"
 
-
+// Constructor: Sets the standard values for the Model when running SEQ, OMP or PTHREAD
 void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario, IMPLEMENTATION implementation)
 {
 #ifndef NOCUDA
@@ -245,7 +245,7 @@ void Ped::Model::cleanup() {
 
 Ped::Model::~Model()
 {
-
+	// Clean up heatmap memory
 	freeHeatmapMemory();
 
 }

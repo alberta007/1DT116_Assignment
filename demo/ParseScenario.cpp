@@ -144,6 +144,8 @@ for (XMLElement* agent = root->FirstChildElement("agent"); agent; agent = agent-
 				agentsSoA.currentWaypointIndex[idx] = waypointIndex;
                 agentsSoA.destX[idx] = wpX;
                 agentsSoA.destY[idx] = wpY;
+
+                
             }
             firstWaypointUsed = true;
         }
