@@ -107,12 +107,6 @@ for (XMLElement* agent = root->FirstChildElement("agent"); agent; agent = agent-
         size_t idx = startIndex + i;
         agentsSoA.x[idx]        = xPos;
         agentsSoA.y[idx]        = yPos;
-        agentsSoA.desiredX[idx] = xPos;   // initial
-        agentsSoA.desiredY[idx] = yPos;   // initial
-
-        agentsSoA.destX[idx] = (float)xPos; 
-        agentsSoA.destY[idx] = (float)yPos;
-
 		
         agentsSoA.currentWaypointIndex[idx] = 0; 
     }
@@ -142,9 +136,6 @@ for (XMLElement* agent = root->FirstChildElement("agent"); agent; agent = agent-
             for (int i = 0; i < n; i++) {
                 size_t idx = startIndex + i;
 				agentsSoA.currentWaypointIndex[idx] = waypointIndex;
-                agentsSoA.destX[idx] = wpX;
-                agentsSoA.destY[idx] = wpY;
-
                 
             }
             firstWaypointUsed = true;
