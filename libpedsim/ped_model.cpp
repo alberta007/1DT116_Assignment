@@ -34,12 +34,12 @@ void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<T
 #else
     std::cout << "Not compiled for CUDA" << std::endl;
 #endif
-
 	// Set 
 	agents = std::vector<Ped::Tagent*>(agentsInScenario.begin(), agentsInScenario.end());
 
 	// Set up destinations
 	destinations = std::vector<Ped::Twaypoint*>(destinationsInScenario.begin(), destinationsInScenario.end());
+
 
 	// Sets the chosen implemenation. Standard in the given code is SEQ
 	this->implementation = implementation;
@@ -58,7 +58,6 @@ void Ped::Model::setup(const AgentsSoA &agentsSoA,
 #else
     std::cout << "Not compiled for CUDA" << std::endl;
 #endif
-
     // Store the SoA representation directly.
     this->agentsSoA = agentsSoA;
 	this->waypointsSoA = waypointsSoA;

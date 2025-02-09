@@ -107,6 +107,7 @@ for (XMLElement* agent = root->FirstChildElement("agent"); agent; agent = agent-
         size_t idx = startIndex + i;
         agentsSoA.x[idx]        = xPos;
         agentsSoA.y[idx]        = yPos;
+
 		
         agentsSoA.currentWaypointIndex[idx] = 0; 
     }
@@ -131,11 +132,15 @@ for (XMLElement* agent = root->FirstChildElement("agent"); agent; agent = agent-
             Ped::Twaypoint* wp = waypoints[id];
             float wpX = (float)wp->getx();
             float wpY = (float)wp->gety();
+            float wpR = (float)wp->getr();
 
             // For each new agent in SoA, set destX/Y
             for (int i = 0; i < n; i++) {
                 size_t idx = startIndex + i;
 				agentsSoA.currentWaypointIndex[idx] = waypointIndex;
+                agentsSoA.destX[idx] = wpX;
+                agentsSoA.destY[idx] = wpY;
+                agentsSoA.destR[idx] = wpR;
                 
             }
             firstWaypointUsed = true;
