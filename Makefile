@@ -36,3 +36,6 @@ run_export:
 
 run_timing:
 	demo/demo hugeScenario.xml --timing-mode --$(set_mode) --max-steps $(arg)
+
+run_timing_gdb:
+	gdb --args demo/demo hugeScenario.xml --timing-mode --$(set_mode) --max-steps $(arg)

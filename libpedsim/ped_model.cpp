@@ -1,18 +1,11 @@
-//
-// pedsim - A microscopic pedestrian simulation system.
-// Copyright (c) 2003 - 2014 by Christian Gloor
-//
-//
-// Adapted for Low Level Parallel Programming 2017
-//
 #include "ped_model.h"
 #include "ped_waypoint.h"
-#include "ped_model.h"
 #include <iostream>
 #include <stack>
 #include <algorithm>
 #include <omp.h>
 #include <thread>
+#include <immintrin.h>  // For AVX/SSE SIMD instructions
 
 #ifndef NOCDUA
 #include "cuda_testkernel.h"
@@ -20,115 +13,113 @@
 
 #include <stdlib.h>
 
-void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario, IMPLEMENTATION implementation)
-{
+void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario, IMPLEMENTATION implementation) {
 #ifndef NOCUDA
-	// Convenience test: does CUDA work on this machine?
-	cuda_test();
+    cuda_test();
 #else
     std::cout << "Not compiled for CUDA" << std::endl;
 #endif
 
-	// Set 
-	agents = std::vector<Ped::Tagent*>(agentsInScenario.begin(), agentsInScenario.end());
+    agents = std::vector<Ped::Tagent*>(agentsInScenario.begin(), agentsInScenario.end());
+    destinations = std::vector<Ped::Twaypoint*>(destinationsInScenario.begin(), destinationsInScenario.end());
+    this->implementation = implementation;
 
-	// Set up destinations
-	destinations = std::vector<Ped::Twaypoint*>(destinationsInScenario.begin(), destinationsInScenario.end());
+    // Prepare SoA data structures for SIMD
+    agentX.resize(agents.size());
+    agentY.resize(agents.size());
+    agentDesiredX.resize(agents.size());
+    agentDesiredY.resize(agents.size());
+    
+    for (size_t i = 0; i < agents.size(); i++) {
+        agentX[i] = agents[i]->getX();
+        agentY[i] = agents[i]->getY();
+    }
 
-	// Sets the chosen implemenation. Standard in the given code is SEQ
-	this->implementation = implementation;
-
-	// Set up heatmap (relevant for Assignment 4)
-	setupHeatmapSeq();
+    setupHeatmapSeq();
 }
 
 void Ped::Model::tick() {
+    switch (implementation) {
+        case 1: { // SIMD vectorization
+            size_t totalAgents = agents.size();
+            size_t i = 0;
 
-	switch(implementation) {
+            for (; i + 4 <= totalAgents; i += 4) {
+                __m128i xPos = _mm_loadu_si128((__m128i*)&agentX[i]);
+                __m128i yPos = _mm_loadu_si128((__m128i*)&agentY[i]);
 
-		case 2:{
+                // Compute next desired position
+                for (int j = 0; j < 4; ++j) {
+                    agents[i + j]->computeNextDesiredPosition();
+                    agentDesiredX[i + j] = agents[i + j]->getDesiredX();
+                    agentDesiredY[i + j] = agents[i + j]->getDesiredY();
+                }
 
-			// Parallelization using OpenMP where each agent is processed in parallel
-			// the number of threads is set using the environment variable OMP_NUM_THREADS
-			// default(none) means that all variables must be explicitly declared as shared or private
-			// schedule(dynamic) means that the work is divided into chunks of work that are distributed to the threads
-			// shared(agents) means that the agents variable is shared among all threads
-			#pragma omp for //parallel for default(none) schedule(static) shared(agents)
-			for (auto agent: agents) {
-				// Get the next desired position
-				agent->computeNextDesiredPosition();
-				// Update the position
-				agent->setX(agent->getDesiredX());
-				agent->setY(agent->getDesiredY());
-			}
+                __m128i xDesired = _mm_loadu_si128((__m128i*)&agentDesiredX[i]);
+                __m128i yDesired = _mm_loadu_si128((__m128i*)&agentDesiredY[i]);
 
-			break;
-		}
-		case 3: {
-			// C++ threads parallelization
-			// printf("Using C++ threads\n");
-			
-			// 1. Determine how many threads to use
-			const char* envstr = std::getenv("CXX_NUM_THREADS");
-			int numThreads = 1; // default
-			if(envstr != nullptr) {
-				numThreads = std::stoi(envstr); 
-			}
-			// printf("Using %d threads\n", numThreads);
-			// 2. Calculate the total number of agents
-			int totalAgents = static_cast<int>(agents.size());
+                _mm_storeu_si128((__m128i*)&agentX[i], xDesired);
+                _mm_storeu_si128((__m128i*)&agentY[i], yDesired);
+            }
 
-			// 3. Limit the number of threads so we don't spawn more threads than agents
-			numThreads = std::min(numThreads, totalAgents);
-
-			// 4. Divide work among the threads
-			int blockSize = totalAgents / numThreads; 
-			int remainder = totalAgents % numThreads; 
-			
-			// We'll store our thread objects here
-			std::vector<std::thread> threads;
-			threads.reserve(numThreads);
-
-			// 5. Worker function to process a subset of agents
-			// Using [=] to capture by value is often safer, but [&, this] could also work
-			auto worker = [=](int start, int end) {
-				for (int i = start; i < end; i++) {
-					agents[i]->computeNextDesiredPosition();
-					agents[i]->setX(agents[i]->getDesiredX());
-					agents[i]->setY(agents[i]->getDesiredY());
-				}
-			};
-
-			// 6. Create the threads
-			int startIndex = 0;
-			for (int t = 0; t < numThreads; t++) {
-				int endIndex = startIndex + blockSize + (t < remainder ? 1 : 0);
-				threads.emplace_back(worker, startIndex, endIndex);
-				startIndex = endIndex;
-			}
-
-			// 7. Join the threads to ensure all work completes
-			for (auto &thread : threads) {
-				thread.join();
-			}
-
-			break;
-		}
-
-
-		case 4: {
-			for (auto agent: agents) {
-				//önskade position
-				agent->computeNextDesiredPosition();
-				//uppdaterar till beräknade position
-				agent->setX(agent->getDesiredX());
-				agent->setY(agent->getDesiredY());
-			}
-			// printf("Using seq\n");
-
-			break;
-		}		
-	}
+            // Process remaining agents sequentially
+            for (; i < totalAgents; ++i) {
+                agents[i]->computeNextDesiredPosition();
+                agentX[i] = agents[i]->getDesiredX();
+                agentY[i] = agents[i]->getDesiredY();
+            }
+            break;
+        }
+        
+        case 2: { // OpenMP parallelization
+            #pragma omp parallel for schedule(static)
+            for (size_t i = 0; i < agents.size(); ++i) {
+                agents[i]->computeNextDesiredPosition();
+                agentX[i] = agents[i]->getDesiredX();
+                agentY[i] = agents[i]->getDesiredY();
+            }
+            break;
+        }
+        
+        case 3: { // C++ threads parallelization
+            const char* envstr = std::getenv("CXX_NUM_THREADS");
+            int numThreads = envstr ? std::stoi(envstr) : 1;
+            numThreads = std::min(numThreads, static_cast<int>(agents.size()));
+            
+            std::vector<std::thread> threads;
+            threads.reserve(numThreads);
+            int blockSize = agents.size() / numThreads;
+            int remainder = agents.size() % numThreads;
+            
+            auto worker = [&](int start, int end) {
+                for (int i = start; i < end; ++i) {
+                    agents[i]->computeNextDesiredPosition();
+                    agentX[i] = agents[i]->getDesiredX();
+                    agentY[i] = agents[i]->getDesiredY();
+                }
+            };
+            
+            int startIndex = 0;
+            for (int t = 0; t < numThreads; ++t) {
+                int endIndex = startIndex + blockSize + (t < remainder ? 1 : 0);
+                threads.emplace_back(worker, startIndex, endIndex);
+                startIndex = endIndex;
+            }
+            for (auto &thread : threads) {
+                thread.join();
+            }
+            break;
+        }
+        
+        case 4: { // Sequential version
+            for (size_t i = 0; i < agents.size(); ++i) {
+                agents[i]->computeNextDesiredPosition();
+                agentX[i] = agents[i]->getDesiredX();
+                agentY[i] = agents[i]->getDesiredY();
+            }
+            break;
+        }
+    }
 }
 ////////////
 /// Everything below here relevant for Assignment 3.

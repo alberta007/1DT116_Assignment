@@ -1,0 +1,2 @@
+demo/demo hugeScenario.xml --timing-mode --o --max-steps 1000
+make: *** [Makefile:38: run_timing] Interrupt
