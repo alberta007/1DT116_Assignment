@@ -7,15 +7,15 @@
 
 #include "ped_model.h"
 #include "ped_agent.h"
-#include "ViewAgent.h"
+#include "ViewAgentSoA.h"
 
 class MainWindowSoA : public QMainWindow {
     Q_OBJECT
 
 public:
     MainWindowSoA(const Ped::Model &pedModel);
-    ~MainWindowSoA();
     void paint();
+    ~MainWindowSoA();
 
     static int cellToPixel(int val);
     static constexpr int cellsizePixel = 10;

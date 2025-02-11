@@ -36,6 +36,7 @@ $(TARGET): $(OBJECTS) $(MOCFILES)
 
 %.moc: %.h %.cpp
 	moc $(DEFINES) $(INCPATH) -i $< -o $@
+	moc MainWindowSoA.h -o moc_MainWindowSoA.cpp
 
 clean:
 	-rm $(TARGET) $(OBJECTS) $(MOCFILES)

@@ -9,6 +9,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include "ped_agent.h"
+#include "MainWindowSoA.h"
 
 class ViewAgent{
 public:
