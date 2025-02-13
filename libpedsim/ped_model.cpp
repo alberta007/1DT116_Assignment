@@ -16,6 +16,7 @@
 
 #ifndef NOCDUA
 #include "cuda_testkernel.h"
+#include "tick_cuda.h"
 #endif
 
 #include <stdlib.h>
@@ -68,7 +69,6 @@ void Ped::Model::setup(const AgentsSoA &agentsSoA,
     // Set up heatmap.
     setupHeatmapSeq();
 }
-
 
 
 void Ped::Model::tick() {
@@ -164,6 +164,13 @@ void Ped::Model::tick() {
 
 			break;
 		}		
+
+		case CUDA: {
+
+			tickCuda(agentsSoA, waypointsSoA);
+
+			break;
+		}
 	}
 }
 ////////////

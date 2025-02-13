@@ -188,7 +188,7 @@ int main(int argc, char*argv[]) {
             {
                 Ped::Model model;
                 ParseScenario parser(scenefile);
-                if (implementation_to_test == Ped::VECTOR) {
+                if (implementation_to_test == Ped::VECTOR || implementation_to_test == Ped::CUDA) {
                     model.setup(parser.getAgentsSoA(), parser.getWaypointsSoA(), implementation_to_test);
                 }
                 else{
@@ -209,7 +209,7 @@ int main(int argc, char*argv[]) {
         } else if (export_trace) {
                 Ped::Model model;
                 ParseScenario parser(scenefile);
-                if (implementation_to_test == Ped::VECTOR) {
+                if (implementation_to_test == Ped::VECTOR || implementation_to_test == Ped::CUDA) {
                     model.setup(parser.getAgentsSoA(), parser.getWaypointsSoA(), implementation_to_test);
                     Simulation *simulation = new ExportSimulationSoA(model, max_steps, export_trace_file);
                      std::cout << "Running Export Tracer...\n";
@@ -241,7 +241,7 @@ int main(int argc, char*argv[]) {
             // Graphics version
             Ped::Model model;
             ParseScenario parser(scenefile);
-            if (implementation_to_test == Ped::VECTOR) {
+            if (implementation_to_test == Ped::VECTOR || implementation_to_test == Ped::CUDA) {
                     model.setup(parser.getAgentsSoA(), parser.getWaypointsSoA(), implementation_to_test);
                 }
                 else{
