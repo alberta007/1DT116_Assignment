@@ -1,0 +1,1574 @@
+Performance Test Results - Tue Feb 11 15:38:53 CET 2025
+----------------------------------------
+==========================================
+Testing scenario: hugeScenario.xml
+------------------------------------------
+Testing with tick count: 500
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 510 milliseconds, 980.392 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 255 milliseconds, 1960.78 Frames Per Second.
+
+
+Speedup: 2
+Done
+Extracted target time: 255 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 328 milliseconds, 1524.39 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 244 milliseconds, 2049.18 Frames Per Second.
+
+
+Speedup: 1.34426
+Done
+Extracted target time: 244 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 219 milliseconds, 2283.11 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 227 milliseconds, 2202.64 Frames Per Second.
+
+
+Speedup: 0.964758
+Done
+Extracted target time: 227 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 208 milliseconds, 2403.85 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 215 milliseconds, 2325.58 Frames Per Second.
+
+
+Speedup: 0.967442
+Done
+Extracted target time: 215 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 159 milliseconds, 3144.65 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 203 milliseconds, 2463.05 Frames Per Second.
+
+
+Speedup: 0.783251
+Done
+Extracted target time: 203 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 155 milliseconds, 3225.81 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 111 milliseconds, 4504.5 Frames Per Second.
+
+
+Speedup: 1.3964
+Done
+Extracted target time: 111 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 122 milliseconds, 4098.36 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 107 milliseconds, 4672.9 Frames Per Second.
+
+
+Speedup: 1.14019
+Done
+Extracted target time: 107 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 114 milliseconds, 4385.96 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 111 milliseconds, 4504.5 Frames Per Second.
+
+
+Speedup: 1.02703
+Done
+Extracted target time: 111 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 108 milliseconds, 4629.63 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 98 milliseconds, 5102.04 Frames Per Second.
+
+
+Speedup: 1.10204
+Done
+Extracted target time: 98 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 121 milliseconds, 4132.23 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 101 milliseconds, 4950.5 Frames Per Second.
+
+
+Speedup: 1.19802
+Done
+Extracted target time: 101 milliseconds
+Average target time for hugeScenario.xml with tick count 500: 167.200 ms (.167 seconds)
+
+------------------------------------------
+Testing with tick count: 1000
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 342 milliseconds, 2923.98 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 217 milliseconds, 4608.29 Frames Per Second.
+
+
+Speedup: 1.57604
+Done
+Extracted target time: 217 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 269 milliseconds, 3717.47 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 216 milliseconds, 4629.63 Frames Per Second.
+
+
+Speedup: 1.24537
+Done
+Extracted target time: 216 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 463 milliseconds, 2159.83 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 281 milliseconds, 3558.72 Frames Per Second.
+
+
+Speedup: 1.64769
+Done
+Extracted target time: 281 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 217 milliseconds, 4608.29 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 221 milliseconds, 4524.89 Frames Per Second.
+
+
+Speedup: 0.9819
+Done
+Extracted target time: 221 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 225 milliseconds, 4444.44 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 216 milliseconds, 4629.63 Frames Per Second.
+
+
+Speedup: 1.04167
+Done
+Extracted target time: 216 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 320 milliseconds, 3125 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 267 milliseconds, 3745.32 Frames Per Second.
+
+
+Speedup: 1.1985
+Done
+Extracted target time: 267 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 275 milliseconds, 3636.36 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 245 milliseconds, 4081.63 Frames Per Second.
+
+
+Speedup: 1.12245
+Done
+Extracted target time: 245 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 262 milliseconds, 3816.79 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 338 milliseconds, 2958.58 Frames Per Second.
+
+
+Speedup: 0.775148
+Done
+Extracted target time: 338 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 226 milliseconds, 4424.78 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 277 milliseconds, 3610.11 Frames Per Second.
+
+
+Speedup: 0.815884
+Done
+Extracted target time: 277 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 224 milliseconds, 4464.29 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 205 milliseconds, 4878.05 Frames Per Second.
+
+
+Speedup: 1.09268
+Done
+Extracted target time: 205 milliseconds
+Average target time for hugeScenario.xml with tick count 1000: 248.300 ms (.248 seconds)
+
+------------------------------------------
+Testing with tick count: 5000
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1092 milliseconds, 4578.75 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1067 milliseconds, 4686.04 Frames Per Second.
+
+
+Speedup: 1.02343
+Done
+Extracted target time: 1067 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1099 milliseconds, 4549.59 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1275 milliseconds, 3921.57 Frames Per Second.
+
+
+Speedup: 0.861961
+Done
+Extracted target time: 1275 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1111 milliseconds, 4500.45 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1252 milliseconds, 3993.61 Frames Per Second.
+
+
+Speedup: 0.88738
+Done
+Extracted target time: 1252 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1241 milliseconds, 4029.01 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1446 milliseconds, 3457.81 Frames Per Second.
+
+
+Speedup: 0.85823
+Done
+Extracted target time: 1446 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1231 milliseconds, 4061.74 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1135 milliseconds, 4405.29 Frames Per Second.
+
+
+Speedup: 1.08458
+Done
+Extracted target time: 1135 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1491 milliseconds, 3353.45 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1316 milliseconds, 3799.39 Frames Per Second.
+
+
+Speedup: 1.13298
+Done
+Extracted target time: 1316 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1184 milliseconds, 4222.97 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1121 milliseconds, 4460.3 Frames Per Second.
+
+
+Speedup: 1.0562
+Done
+Extracted target time: 1121 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1186 milliseconds, 4215.85 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1223 milliseconds, 4088.31 Frames Per Second.
+
+
+Speedup: 0.969746
+Done
+Extracted target time: 1223 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1203 milliseconds, 4156.28 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1141 milliseconds, 4382.12 Frames Per Second.
+
+
+Speedup: 1.05434
+Done
+Extracted target time: 1141 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2140 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 1266 milliseconds, 3949.45 Frames Per Second.
+Note: removed 2208 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1190 milliseconds, 4201.68 Frames Per Second.
+
+
+Speedup: 1.06387
+Done
+Extracted target time: 1190 milliseconds
+Average target time for hugeScenario.xml with tick count 5000: 1216.600 ms (1.216 seconds)
+
+==========================================
+Testing scenario: scenario_box.xml
+------------------------------------------
+Testing with tick count: 500
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 6 milliseconds, 83333.3 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 3 milliseconds, 166667 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 2 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 6 milliseconds, 83333.3 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 2 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 5 milliseconds, 100000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 5 milliseconds, 100000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 5 milliseconds, 100000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 2 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 5 milliseconds, 100000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 0 milliseconds, inf Frames Per Second.
+
+
+Speedup: inf
+Done
+Extracted target time: 0 milliseconds
+Average target time for scenario_box.xml with tick count 500: 0 ms (0 seconds)
+
+------------------------------------------
+Testing with tick count: 1000
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 4 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 4
+Done
+Extracted target time: 1 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 5 milliseconds, 200000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 5
+Done
+Extracted target time: 1 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 6 milliseconds, 166667 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 6
+Done
+Extracted target time: 1 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 7 milliseconds, 142857 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 7
+Done
+Extracted target time: 1 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 6 milliseconds, 166667 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 6
+Done
+Extracted target time: 1 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 4 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 4
+Done
+Extracted target time: 1 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 4 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 2 milliseconds, 500000 Frames Per Second.
+
+
+Speedup: 2
+Done
+Extracted target time: 2 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 7 milliseconds, 142857 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 3 milliseconds, 333333 Frames Per Second.
+
+
+Speedup: 2.33333
+Done
+Extracted target time: 3 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 8 milliseconds, 125000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 3 milliseconds, 333333 Frames Per Second.
+
+
+Speedup: 2.66667
+Done
+Extracted target time: 3 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 4 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 1 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 4
+Done
+Extracted target time: 1 milliseconds
+Average target time for scenario_box.xml with tick count 1000: 1.500 ms (.001 seconds)
+
+------------------------------------------
+Testing with tick count: 5000
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 14 milliseconds, 357143 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 6 milliseconds, 833333 Frames Per Second.
+
+
+Speedup: 2.33333
+Done
+Extracted target time: 6 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 10 milliseconds, 500000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 8 milliseconds, 625000 Frames Per Second.
+
+
+Speedup: 1.25
+Done
+Extracted target time: 8 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 21 milliseconds, 238095 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 17 milliseconds, 294118 Frames Per Second.
+
+
+Speedup: 1.23529
+Done
+Extracted target time: 17 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 20 milliseconds, 250000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 14 milliseconds, 357143 Frames Per Second.
+
+
+Speedup: 1.42857
+Done
+Extracted target time: 14 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 12 milliseconds, 416667 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 7 milliseconds, 714286 Frames Per Second.
+
+
+Speedup: 1.71429
+Done
+Extracted target time: 7 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 12 milliseconds, 416667 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 6 milliseconds, 833333 Frames Per Second.
+
+
+Speedup: 2
+Done
+Extracted target time: 6 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 11 milliseconds, 454545 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 7 milliseconds, 714286 Frames Per Second.
+
+
+Speedup: 1.57143
+Done
+Extracted target time: 7 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 12 milliseconds, 416667 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 5 milliseconds, 1e+06 Frames Per Second.
+
+
+Speedup: 2.4
+Done
+Extracted target time: 5 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 10 milliseconds, 500000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 7 milliseconds, 714286 Frames Per Second.
+
+
+Speedup: 1.42857
+Done
+Extracted target time: 7 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 10 milliseconds, 500000 Frames Per Second.
+Note: removed 2 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 6 milliseconds, 833333 Frames Per Second.
+
+
+Speedup: 1.66667
+Done
+Extracted target time: 6 milliseconds
+Average target time for scenario_box.xml with tick count 5000: 8.300 ms (.008 seconds)
+
+==========================================
+Testing scenario: scenario.xml
+------------------------------------------
+Testing with tick count: 500
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 26 milliseconds, 19230.8 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 18 milliseconds, 27777.8 Frames Per Second.
+
+
+Speedup: 1.44444
+Done
+Extracted target time: 18 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 25 milliseconds, 20000 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 24 milliseconds, 20833.3 Frames Per Second.
+
+
+Speedup: 1.04167
+Done
+Extracted target time: 24 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 24 milliseconds, 20833.3 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 22 milliseconds, 22727.3 Frames Per Second.
+
+
+Speedup: 1.09091
+Done
+Extracted target time: 22 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 27 milliseconds, 18518.5 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 21 milliseconds, 23809.5 Frames Per Second.
+
+
+Speedup: 1.28571
+Done
+Extracted target time: 21 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 21 milliseconds, 23809.5 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 19 milliseconds, 26315.8 Frames Per Second.
+
+
+Speedup: 1.10526
+Done
+Extracted target time: 19 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 25 milliseconds, 20000 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 17 milliseconds, 29411.8 Frames Per Second.
+
+
+Speedup: 1.47059
+Done
+Extracted target time: 17 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 42 milliseconds, 11904.8 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 19 milliseconds, 26315.8 Frames Per Second.
+
+
+Speedup: 2.21053
+Done
+Extracted target time: 19 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 25 milliseconds, 20000 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 20 milliseconds, 25000 Frames Per Second.
+
+
+Speedup: 1.25
+Done
+Extracted target time: 20 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 25 milliseconds, 20000 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 22 milliseconds, 22727.3 Frames Per Second.
+
+
+Speedup: 1.13636
+Done
+Extracted target time: 22 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 500
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 22 milliseconds, 22727.3 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 22 milliseconds, 22727.3 Frames Per Second.
+
+
+Speedup: 1
+Done
+Extracted target time: 22 milliseconds
+Average target time for scenario.xml with tick count 500: 20.400 ms (.020 seconds)
+
+------------------------------------------
+Testing with tick count: 1000
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 54 milliseconds, 18518.5 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 51 milliseconds, 19607.8 Frames Per Second.
+
+
+Speedup: 1.05882
+Done
+Extracted target time: 51 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 40 milliseconds, 25000 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 38 milliseconds, 26315.8 Frames Per Second.
+
+
+Speedup: 1.05263
+Done
+Extracted target time: 38 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 41 milliseconds, 24390.2 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 41 milliseconds, 24390.2 Frames Per Second.
+
+
+Speedup: 1
+Done
+Extracted target time: 41 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 47 milliseconds, 21276.6 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 32 milliseconds, 31250 Frames Per Second.
+
+
+Speedup: 1.46875
+Done
+Extracted target time: 32 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 46 milliseconds, 21739.1 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 54 milliseconds, 18518.5 Frames Per Second.
+
+
+Speedup: 0.851852
+Done
+Extracted target time: 54 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 43 milliseconds, 23255.8 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 36 milliseconds, 27777.8 Frames Per Second.
+
+
+Speedup: 1.19444
+Done
+Extracted target time: 36 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 39 milliseconds, 25641 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 32 milliseconds, 31250 Frames Per Second.
+
+
+Speedup: 1.21875
+Done
+Extracted target time: 32 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 40 milliseconds, 25000 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 35 milliseconds, 28571.4 Frames Per Second.
+
+
+Speedup: 1.14286
+Done
+Extracted target time: 35 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 37 milliseconds, 27027 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 34 milliseconds, 29411.8 Frames Per Second.
+
+
+Speedup: 1.08824
+Done
+Extracted target time: 34 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 1000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 52 milliseconds, 19230.8 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 32 milliseconds, 31250 Frames Per Second.
+
+
+Speedup: 1.625
+Done
+Extracted target time: 32 milliseconds
+Average target time for scenario.xml with tick count 1000: 38.500 ms (.038 seconds)
+
+------------------------------------------
+Testing with tick count: 5000
+Run 1:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 191 milliseconds, 26178 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 185 milliseconds, 27027 Frames Per Second.
+
+
+Speedup: 1.03243
+Done
+Extracted target time: 185 milliseconds
+Run 2:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 238 milliseconds, 21008.4 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 190 milliseconds, 26315.8 Frames Per Second.
+
+
+Speedup: 1.25263
+Done
+Extracted target time: 190 milliseconds
+Run 3:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 214 milliseconds, 23364.5 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 234 milliseconds, 21367.5 Frames Per Second.
+
+
+Speedup: 0.91453
+Done
+Extracted target time: 234 milliseconds
+Run 4:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 187 milliseconds, 26738 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 217 milliseconds, 23041.5 Frames Per Second.
+
+
+Speedup: 0.861751
+Done
+Extracted target time: 217 milliseconds
+Run 5:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 202 milliseconds, 24752.5 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 201 milliseconds, 24875.6 Frames Per Second.
+
+
+Speedup: 1.00498
+Done
+Extracted target time: 201 milliseconds
+Run 6:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 184 milliseconds, 27173.9 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 198 milliseconds, 25252.5 Frames Per Second.
+
+
+Speedup: 0.929293
+Done
+Extracted target time: 198 milliseconds
+Run 7:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 296 milliseconds, 16891.9 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 258 milliseconds, 19379.8 Frames Per Second.
+
+
+Speedup: 1.14729
+Done
+Extracted target time: 258 milliseconds
+Run 8:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 246 milliseconds, 20325.2 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 238 milliseconds, 21008.4 Frames Per Second.
+
+
+Speedup: 1.03361
+Done
+Extracted target time: 238 milliseconds
+Run 9:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 224 milliseconds, 22321.4 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 223 milliseconds, 22421.5 Frames Per Second.
+
+
+Speedup: 1.00448
+Done
+Extracted target time: 223 milliseconds
+Run 10:
+Option --timing-mode activated
+Option --seq activated
+Option --max-steps set to: 5000
+Note: removed 27 duplicates from scenario.
+Not compiled for CUDA
+Running reference version...
+Reference time: 231 milliseconds, 21645 Frames Per Second.
+Note: removed 32 duplicates from scenario.
+Not compiled for CUDA
+Running target version...
+Target time: 220 milliseconds, 22727.3 Frames Per Second.
+
+
+Speedup: 1.05
+Done
+Extracted target time: 220 milliseconds
+Average target time for scenario.xml with tick count 5000: 216.400 ms (.216 seconds)
+

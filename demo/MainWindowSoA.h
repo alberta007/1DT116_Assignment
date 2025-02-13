@@ -7,7 +7,7 @@
 
 #include "ped_model.h"
 #include "ped_agent.h"
-#include "ViewAgent.h"
+#include "ViewAgentSoA.h"
 
 class MainWindowSoA : public QMainWindow {
     Q_OBJECT

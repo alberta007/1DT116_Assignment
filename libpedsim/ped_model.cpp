@@ -16,6 +16,7 @@
 
 #ifndef NOCDUA
 #include "cuda_testkernel.h"
+#include "tick_cuda.h"
 #endif
 
 #include <stdlib.h>
@@ -24,6 +25,7 @@
 #include <cmath>
 
 #include "soa_tick.h"
+
 
 // Constructor: Sets the standard values for the Model when running SEQ, OMP or PTHREAD
 void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario, IMPLEMENTATION implementation)
@@ -74,6 +76,12 @@ void Ped::Model::setup(const AgentsSoA &agentsSoA,
 void Ped::Model::tick() {
 
 	switch(implementation) {
+
+		case CUDA: {
+			// Call the CUDA implementation of tick (in tick_cuda.cpp)
+			tickCuda(agentsSoA, waypointsSoA);
+			break;
+		}
 
 		case VECTOR: {
 			// Call the SoA implementation of tick (in soa_tick.cpp)

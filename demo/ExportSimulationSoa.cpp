@@ -1,4 +1,4 @@
-#include "ExportSimulationSoA.h"
+#include "ExportSimulationSoa.h"
 #include <cstdint> // for int16_t and int32_t
 
 using namespace std;

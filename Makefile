@@ -36,3 +36,8 @@ run_export:
 
 run_timing:
 	demo/demo hugeScenario.xml --timing-mode --$(set_mode) --max-steps $(arg)
+
+valgrind: demo/demo
+	@echo "Running Valgrind..."
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes demo/demo hugeScenario.xml --timing-mode --simd --max-steps 100
+

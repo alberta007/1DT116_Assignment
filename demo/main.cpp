@@ -11,7 +11,7 @@
 #undef max
 #include "ped_model.h"
 #include "ParseScenario.h"
-#include "ExportSimulationSoA.h"
+#include "ExportSimulationSoa.h"
 
 #include <thread>
 
