@@ -64,14 +64,40 @@ __global__ void tickCuda_kernel(
     ax += nx;
     ay += ny;
     agent_x[idx] = (int)roundf(ax);
-    agent_y[idx] = (int)roundf(ay);
+    agent_y[idx] = (int)roundf(ay); 
 }
 
 // Host function: Launches the CUDA kernel.
 void tickCuda(AgentsSoA &agents, const WaypointsSoA &waypoints) {
 #ifndef NOCUDA
+    float *d_agents_destX, *d_agents_destY, *d_agents_destR;
+    int *d_agents_currentWaypointIndex, *d_agents_x, *d_agents_y;
+    float *d_waypoints_x, *d_waypoints_y, *d_waypoints_r;
+    
     int numAgents = agents.x.size();
     int numWaypoints = waypoints.x.size();
+    
+    cudaMalloc((void**)&d_agents_x, numAgents * sizeof(int));
+    cudaMalloc((void**)&d_agents_y, numAgents * sizeof(int));
+    cudaMalloc((void**)&d_agents_destX, numAgents * sizeof(float));
+    cudaMalloc((void**)&d_agents_destY, numAgents * sizeof(float));
+    cudaMalloc((void**)&d_agents_destR, numAgents * sizeof(float));
+    cudaMalloc((void**)&d_agents_currentWaypointIndex, numAgents * sizeof(int));
+
+    cudaMalloc((void**)&d_waypoints_x, numWaypoints * sizeof(float));
+    cudaMalloc((void**)&d_waypoints_y, numWaypoints * sizeof(float));
+    cudaMalloc((void**)&d_waypoints_r, numWaypoints * sizeof(float));
+
+    cudaMemcpy(d_agents_x, agents.x.data(), numAgents * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_agents_y, agents.y.data(), numAgents * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_agents_destX, agents.destX.data(), numAgents * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_agents_destY, agents.destY.data(), numAgents * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_agents_destR, agents.destR.data(), numAgents * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_agents_currentWaypointIndex, agents.currentWaypointIndex.data(), numAgents * sizeof(int), cudaMemcpyHostToDevice);
+
+    cudaMemcpy(d_waypoints_x, waypoints.x.data(), numWaypoints * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_waypoints_y, waypoints.y.data(), numWaypoints * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_waypoints_r, waypoints.r.data(), numWaypoints * sizeof(float), cudaMemcpyHostToDevice);
 
     // Choose a block size and calculate grid size.
     int blockSize = 256;
@@ -79,14 +105,48 @@ void tickCuda(AgentsSoA &agents, const WaypointsSoA &waypoints) {
 
     // Launch the kernel.
     tickCuda_kernel<<<gridSize, blockSize>>>(
-        agents.x.data(), agents.y.data(),
-        agents.destX.data(), agents.destY.data(), agents.destR.data(),
-        agents.currentWaypointIndex.data(),
-        waypoints.x.data(), waypoints.y.data(), waypoints.r.data(),
+        d_agents_x, d_agents_y,
+        d_agents_destX, d_agents_destY, d_agents_destR,
+        d_agents_currentWaypointIndex,
+        d_waypoints_x, d_waypoints_y, d_waypoints_r,
         numAgents, numWaypoints
     );
 
-    // Synchronize the device to ensure the kernel has finished.
+    // Check for kernel launch errors
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess) {
+        printf("CUDA error: %s\n", cudaGetErrorString(err));
+    }
+
+    // Wait for kernel to finish
     cudaDeviceSynchronize();
+
+    // Check for execution errors
+    err = cudaGetLastError();
+    if (err != cudaSuccess) {
+        printf("CUDA error after synchronization: %s\n", cudaGetErrorString(err));
+    }
+
+    cudaMemcpy(agents.x.data(), d_agents_x, numAgents * sizeof(int), cudaMemcpyDeviceToHost);
+    cudaMemcpy(agents.y.data(), d_agents_y, numAgents * sizeof(int), cudaMemcpyDeviceToHost);
+    cudaMemcpy(agents.destX.data(), d_agents_destX, numAgents * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(agents.destY.data(), d_agents_destY, numAgents * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(agents.destR.data(), d_agents_destR, numAgents * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(agents.currentWaypointIndex.data(), d_agents_currentWaypointIndex, numAgents * sizeof(int), cudaMemcpyDeviceToHost);
+
+    cudaMemcpy((float *)waypoints.x.data(), d_waypoints_x, numWaypoints * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy((float *)waypoints.y.data(), d_waypoints_y, numWaypoints * sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy((float *)waypoints.r.data(), d_waypoints_r, numWaypoints * sizeof(float), cudaMemcpyDeviceToHost);
+
+    // Synchronize the device to ensure the kernel has finished.
+    cudaFree(d_agents_x);
+    cudaFree(d_agents_y);
+    cudaFree(d_agents_destX);
+    cudaFree(d_agents_destY);
+    cudaFree(d_agents_destR);
+    cudaFree(d_agents_currentWaypointIndex);
+    cudaFree(d_waypoints_x);
+    cudaFree(d_waypoints_y);
+    cudaFree(d_waypoints_r);
 #endif
 }
