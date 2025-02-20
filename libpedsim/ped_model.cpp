@@ -26,6 +26,9 @@
 
 #include "soa_tick.h"
 
+const int WORLDSIZE_X = 160;
+const int WORLDSIZE_Y = 120; 
+
 
 // Constructor: Sets the standard values for the Model when running SEQ, OMP or PTHREAD
 void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<Twaypoint*> destinationsInScenario, IMPLEMENTATION implementation)
@@ -44,6 +47,24 @@ void Ped::Model::setup(std::vector<Ped::Tagent*> agentsInScenario, std::vector<T
 
 
 	// Sets the chosen implemenation. Standard in the given code is SEQ
+
+	int regionSizeX = WORLDSIZE_X / 2;
+	int regionSizeY = WORLDSIZE_Y / 2;
+	int startX = 0;
+	int startY = 0;
+
+	this->addRegion(Region(startX, regionSizeX, startY, regionSizeY));
+	this->addRegion(Region(regionSizeX, WORLDSIZE_X, startY, regionSizeY));
+	
+	this->addRegion(Region(startX, regionSizeX, regionSizeY, WORLDSIZE_Y));
+	this->addRegion(Region(regionSizeX, WORLDSIZE_X, regionSizeY, WORLDSIZE_Y));
+
+	for (auto agent : agents) {
+		this->placeAgentInRegion(agent);
+	}
+
+	this->listRegions();
+
 	this->implementation = implementation;
 
 	// Set up heatmap (relevant for Assignment 4)
@@ -164,9 +185,10 @@ void Ped::Model::tick() {
 			for (auto agent: agents) {
 				//önskade position
 				agent->computeNextDesiredPosition();
-				//uppdaterar till beräknade position
-				agent->setX(agent->getDesiredX());
-				agent->setY(agent->getDesiredY());
+				// //uppdaterar till beräknade position
+				// agent->setX(agent->getDesiredX());
+				// agent->setY(agent->getDesiredY());
+				move(agent); 
 			}
 			// printf("Using seq\n");
 

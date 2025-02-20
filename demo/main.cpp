@@ -173,7 +173,6 @@ int main(int argc, char*argv[]) {
                 ParseScenario parser(scenefile);
                 model.setup(parser.getAgents(), parser.getWaypoints(), Ped::SEQ);
                 Simulation *simulation = new TimingSimulation(model, max_steps);
-
                 // Simulation mode to use when profiling (without any GUI)
                 std::cout << "Running reference version...\n";
                 auto start = std::chrono::steady_clock::now();

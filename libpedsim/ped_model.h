@@ -11,9 +11,10 @@
 #ifndef _ped_model_h_
 #define _ped_model_h_
 
-#include <vector>
 #include <map>
 #include <set>
+#include <iostream>
+#include <vector>
 
 #include "ped_agent.h"
 #include "soa_agent.h"
@@ -25,6 +26,24 @@ namespace Ped{
 	// The implementation modes for Assignment 1 + 2:
 	// chooses which implementation to use for tick()
 	enum IMPLEMENTATION { CUDA, VECTOR, OMP, PTHREAD, SEQ };
+
+	class Region {
+		public: 
+			int startX, endX, startY, endY;
+
+			std::vector<Tagent*> agentsInRegion;
+
+			Region(int x1, int x2, int y1, int y2)
+				: startX(x1), endX(x2), startY(y1), endY(y2) {}
+
+			bool contains(int x, int y) const {
+				return (x >= startX && x < endX && y >= startY && y < endY);
+			}
+
+			void addToAgentsInRegion(Tagent* agent) {
+				agentsInRegion.push_back(agent);
+			}
+	};
 
 	class Model
 	{
@@ -55,6 +74,26 @@ namespace Ped{
 		int const * const * getHeatmap() const { return blurred_heatmap; };
 		int getHeatmapSize() const;
 
+		void addRegion(const Region& region) {
+			regions.push_back(new Region(region));
+		}
+
+		void listRegions() const {
+			for (size_t i = 0; i < regions.size(); ++i) {
+				std::cout << "Region " << i << ": (" 
+						  << regions[i]->startX << ", " << regions[i]->startY << ") to ("
+						  << regions[i]->endX << ", " << regions[i]->endY << "), SIZE OF AGENT: " << regions[i]->agentsInRegion.size() << "\n";
+			}
+		}
+
+		void placeAgentInRegion(Tagent* agent) {
+			for(auto region : regions) {
+				if (region->contains(agent->getX(), agent->getY())) {
+					region->addToAgentsInRegion(agent);
+				}
+			}
+		}
+
 	private:
 
 		// Denotes which implementation (sequential, parallel implementations..)
@@ -80,6 +119,8 @@ namespace Ped{
 		////////////
 		/// Everything below here won't be relevant until Assignment 3
 		///////////////////////////////////////////////
+
+		std::vector<Region*> regions;
 
 		// Returns the set of neighboring agents for the specified position
 		set<const Ped::Tagent*> getNeighbors(int x, int y, int dist) const;
