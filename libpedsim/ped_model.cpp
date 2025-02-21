@@ -118,7 +118,7 @@ void Ped::Model::tick()
 	{
 		// Parallelization using OpenMP where each region is processed in parallel
 		// default(shared) for regions, but each thread has private agent pointers
-		#pragma omp parallel for schedule(dynamic) default(shared)
+		#pragma omp parallel for
 		for (size_t i = 0; i < this->regions.size(); i++) {
 			auto region = this->regions[i];
 			// Temporary vector
