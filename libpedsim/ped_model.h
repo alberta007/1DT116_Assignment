@@ -34,12 +34,15 @@ namespace Ped{
 
 			std::vector<Tagent*> agentsInRegion;
 
-			Region(int x1, int x2, int y1, int y2)
-				: startX(x1), endX(x2), startY(y1), endY(y2) {}
-
+			Region(int x1, int x2, int y1, int y2, int id)
+				: startX(x1), endX(x2), startY(y1), endY(y2), regionID(id) {}
+				int regionID;
 			bool contains(int x, int y) const {
 				return (x >= startX && x < endX && y >= startY && y < endY);
 			}
+			
+			int regionid() const { return regionID; }  // Add getter method
+
 
 			void addToAgentsInRegion(Tagent* agent) {
 				agentsInRegion.push_back(agent);
@@ -118,6 +121,15 @@ namespace Ped{
 
 			return NULL;
 		}
+
+		Region* getDestinationRegion(int x, int y) const {
+        for (auto region : regions) {
+            if (region->contains(x, y)) {
+                return region;
+            }
+        }
+        return NULL; // Should never happen if regions cover whole space
+    }
 
 	private:
 
