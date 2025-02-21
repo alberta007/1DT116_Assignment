@@ -23,11 +23,13 @@
 #include "soa_agent.h"
 #include <immintrin.h>
 #include <cmath>
+#include <mutex>
 
 #include "soa_tick.h"
 
 const int WORLDSIZE_X = 160;
 const int WORLDSIZE_Y = 120; 
+std::mutex mtx;
 
 
 // Constructor: Sets the standard values for the Model when running SEQ, OMP or PTHREAD
@@ -118,13 +120,17 @@ void Ped::Model::tick() {
 			// default(none) means that all variables must be explicitly declared as shared or private
 			// schedule(dynamic) means that the work is divided into chunks of work that are distributed to the threads
 			// shared(agents) means that the agents variable is shared among all threads
-			#pragma omp for //parallel for default(none) schedule(static) shared(agents)
-			for (auto agent: agents) {
-				// Get the next desired position
-				agent->computeNextDesiredPosition();
-				// Update the position
-				agent->setX(agent->getDesiredX());
-				agent->setY(agent->getDesiredY());
+			
+			#pragma omp parallel for 
+			for (auto region: this->regions) {
+				for (auto agent: region->agentsInRegion) {
+					// Get the next desired position
+					agent->computeNextDesiredPosition();
+					// Update the position
+					// agent->setX(agent->getDesiredX());
+					// agent->setY(agent->getDesiredY());
+					move(agent); 
+				}
 			}
 
 			break;
@@ -182,15 +188,16 @@ void Ped::Model::tick() {
 
 
 		case SEQ: {
-			for (auto agent: agents) {
-				//önskade position
-				agent->computeNextDesiredPosition();
-				// //uppdaterar till beräknade position
-				// agent->setX(agent->getDesiredX());
-				// agent->setY(agent->getDesiredY());
-				move(agent); 
+			for (auto region: this->regions) {
+				for (auto agent: region->agentsInRegion) {
+					// Get the next desired position
+					agent->computeNextDesiredPosition();
+					// Update the position
+					// agent->setX(agent->getDesiredX());
+					// agent->setY(agent->getDesiredY());
+					move(agent); 
+				}
 			}
-			// printf("Using seq\n");
 
 			break;
 		}		
@@ -208,6 +215,7 @@ void Ped::Model::move(Ped::Tagent *agent)
 	// Search for neighboring agents
 	set<const Ped::Tagent *> neighbors = getNeighbors(agent->getX(), agent->getY(), 2);
 
+	Region *currRegion = this->getAgentCurrentRegion(agent);
 	// Retrieve their positions
 	std::vector<std::pair<int, int> > takenPositions;
 	for (std::set<const Ped::Tagent*>::iterator neighborIt = neighbors.begin(); neighborIt != neighbors.end(); ++neighborIt) {
@@ -238,17 +246,49 @@ void Ped::Model::move(Ped::Tagent *agent)
 	prioritizedAlternatives.push_back(p1);
 	prioritizedAlternatives.push_back(p2);
 
-	// Find the first empty alternative position
-	for (std::vector<pair<int, int> >::iterator it = prioritizedAlternatives.begin(); it != prioritizedAlternatives.end(); ++it) {
+	switch(implementation) {
+		case OMP: {
+			//std::cout<<"RUNNING OMP\n";
+			// Find the first empty alternative position
+			for (std::vector<pair<int, int> >::iterator it = prioritizedAlternatives.begin(); it != prioritizedAlternatives.end(); ++it) {
 
-		// If the current position is not yet taken by any neighbor
-		if (std::find(takenPositions.begin(), takenPositions.end(), *it) == takenPositions.end()) {
+				// If the current position is not yet taken by any neighbor
+				if (std::find(takenPositions.begin(), takenPositions.end(), *it) == takenPositions.end()) {
 
-			// Set the agent's position 
-			agent->setX((*it).first);
-			agent->setY((*it).second);
+					if (currRegion->contains((*it).first, (*it).second)) {
+						// Set the agent's position 
+						agent->setX((*it).first);
+						agent->setY((*it).second);
+					} else {
 
+						mtx.lock();
+						this->removeAgentFromRegion(agent); 
+						agent->setX((*it).first);
+						agent->setY((*it).second);
+						this->placeAgentInRegion(agent);
+						mtx.unlock();
+					}
+
+					break;
+				}
+			}
+			
 			break;
+		}
+		default: {
+			//std::cout<<"RUNNING SEQ\n";
+			// Find the first empty alternative position
+			for (std::vector<pair<int, int> >::iterator it = prioritizedAlternatives.begin(); it != prioritizedAlternatives.end(); ++it) {
+
+				// If the current position is not yet taken by any neighbor
+				if (std::find(takenPositions.begin(), takenPositions.end(), *it) == takenPositions.end()) {
+					// Set the agent's position 
+					agent->setX((*it).first);
+					agent->setY((*it).second);
+	
+					break;
+				}
+			}
 		}
 	}
 }

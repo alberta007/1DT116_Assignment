@@ -15,6 +15,7 @@
 #include <set>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include "ped_agent.h"
 #include "soa_agent.h"
@@ -42,6 +43,12 @@ namespace Ped{
 
 			void addToAgentsInRegion(Tagent* agent) {
 				agentsInRegion.push_back(agent);
+			}
+
+			void removeFromAgentsInRegion(Tagent* agent) {
+				agentsInRegion.erase(std::remove_if(agentsInRegion.begin(), agentsInRegion.end(),
+													[agent](Tagent* agentToRemove) {return agentToRemove->getX() == agent->getX() && agentToRemove->getY() == agent->getY();}),
+												agentsInRegion.end());
 			}
 	};
 
@@ -92,6 +99,24 @@ namespace Ped{
 					region->addToAgentsInRegion(agent);
 				}
 			}
+		}
+
+		void removeAgentFromRegion(Tagent* agent) {
+			for(auto region : regions) {
+				if (region->contains(agent->getX(), agent->getY())) {
+					region->removeFromAgentsInRegion(agent);
+				}
+			}
+		}
+
+		Region* getAgentCurrentRegion(Tagent* agent) const {
+			for(auto region : regions) {
+				if (region->contains(agent->getX(), agent->getY())) {
+					return region;
+				}
+			}
+
+			return NULL;
 		}
 
 	private:
