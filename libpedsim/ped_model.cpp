@@ -53,11 +53,17 @@ void Ped::Model::setup(std::vector<Ped::Tagent *> agentsInScenario, std::vector<
 	int startX = 0;
 	int startY = 0;
 
-	this->addRegion(Region(startX, regionSizeX, startY, regionSizeY,1));
-	this->addRegion(Region(regionSizeX, WORLDSIZE_X, startY, regionSizeY,2));
+	
+	this->addRegion(Region(startX, startX + regionSizeX, startY, startY + regionSizeY, 1));
+    this->addRegion(Region(startX + regionSizeX, startX + 2*regionSizeX, startY, startY + regionSizeY, 2));
+    this->addRegion(Region(startX + 2*regionSizeX, startX + 3*regionSizeX, startY, startY + regionSizeY, 3));
+    this->addRegion(Region(startX + 3*regionSizeX, WORLDSIZE_X, startY, startY + regionSizeY, 4));
 
-	this->addRegion(Region(startX, regionSizeX, regionSizeY, WORLDSIZE_Y,3));
-	this->addRegion(Region(regionSizeX, WORLDSIZE_X, regionSizeY, WORLDSIZE_Y,4));
+    // Bottom row (regions 5-8)
+    this->addRegion(Region(startX, startX + regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 5));
+    this->addRegion(Region(startX + regionSizeX, startX + 2*regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 6));
+    this->addRegion(Region(startX + 2*regionSizeX, startX + 3*regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 7));
+    this->addRegion(Region(startX + 3*regionSizeX, WORLDSIZE_X, startY + regionSizeY, WORLDSIZE_Y, 8));
 
 	for (auto agent : agents)
 	{
@@ -116,22 +122,28 @@ void Ped::Model::tick()
 
 	case OMP:
 	{
-		// Parallelization using OpenMP where each region is processed in parallel
-		// default(shared) for regions, but each thread has private agent pointers
-		#pragma omp parallel for
-		for (size_t i = 0; i < this->regions.size(); i++) {
+// Parallelization using OpenMP where each region is processed in parallel
+// default(shared) for regions, but each thread has private agent pointers
+		
+		#pragma omp parallel for schedule(dynamic)
+		for (size_t i = 0; i < this->regions.size(); i++)
+		{
 			auto region = this->regions[i];
 			// Temporary vector
-			std::vector<Tagent*> agentsToProcess;			
-			std::cout << "\nProcessing region: " << region->regionid() << std::endl;
+			std::vector<Tagent *> agentsToProcess;
+			// std::cout << "\nProcessing region: " << region->regionid() << std::endl;
 			agentsToProcess = region->agentsInRegion; // Create copy
-	
-			// Process each agent in this region
-			for (auto agent : agentsToProcess) {
-				agent->computeNextDesiredPosition();
 
-				move(agent);
+			// Process each agent in this region
+			for (auto agent : agentsToProcess)
+			{
+				#pragma omp task shared(agent)
+				{
+					agent->computeNextDesiredPosition();
+					move(agent);
+				}
 			}
+			
 		}
 		break;
 	}
@@ -275,17 +287,17 @@ void Ped::Model::move(Ped::Tagent *agent)
 					// Set the agent's position
 					agent->setX((*it).first);
 					agent->setY((*it).second);
-				}			
+				}
 				else
 				{
-				{
-					mtx.lock();
-					this->removeAgentFromRegion(agent);
-					agent->setX((*it).first);
-					agent->setY((*it).second);
-					this->placeAgentInRegion(agent);
-					mtx.unlock();
-				}
+					{
+						mtx.lock();
+						this->removeAgentFromRegion(agent);
+						agent->setX((*it).first);
+						agent->setY((*it).second);
+						this->placeAgentInRegion(agent);
+						mtx.unlock();
+					}
 				}
 
 				break;
