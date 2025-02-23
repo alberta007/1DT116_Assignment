@@ -48,22 +48,22 @@ void Ped::Model::setup(std::vector<Ped::Tagent *> agentsInScenario, std::vector<
 
 	// Sets the chosen implemenation. Standard in the given code is SEQ
 
-	int regionSizeX = WORLDSIZE_X / 2;
+	int regionSizeX = WORLDSIZE_X / 4;
 	int regionSizeY = WORLDSIZE_Y / 2;
 	int startX = 0;
 	int startY = 0;
 
 	
-	this->addRegion(Region(startX, startX + regionSizeX, startY, startY + regionSizeY, 1));
-    this->addRegion(Region(startX + regionSizeX, startX + 2*regionSizeX, startY, startY + regionSizeY, 2));
-    this->addRegion(Region(startX + 2*regionSizeX, startX + 3*regionSizeX, startY, startY + regionSizeY, 3));
-    this->addRegion(Region(startX + 3*regionSizeX, WORLDSIZE_X, startY, startY + regionSizeY, 4));
+	this->addRegion(new Region(startX, startX + regionSizeX, startY, startY + regionSizeY, 1));
+    this->addRegion(new Region(startX + regionSizeX, startX + 2*regionSizeX, startY, startY + regionSizeY, 2));
+    this->addRegion(new Region(startX + 2*regionSizeX, startX + 3*regionSizeX, startY, startY + regionSizeY, 3));
+    this->addRegion(new Region(startX + 3*regionSizeX, WORLDSIZE_X, startY, startY + regionSizeY, 4));
 
     // Bottom row (regions 5-8)
-    this->addRegion(Region(startX, startX + regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 5));
-    this->addRegion(Region(startX + regionSizeX, startX + 2*regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 6));
-    this->addRegion(Region(startX + 2*regionSizeX, startX + 3*regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 7));
-    this->addRegion(Region(startX + 3*regionSizeX, WORLDSIZE_X, startY + regionSizeY, WORLDSIZE_Y, 8));
+    this->addRegion(new Region(startX, startX + regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 5));
+    this->addRegion(new Region(startX + regionSizeX, startX + 2*regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 6));
+    this->addRegion(new Region(startX + 2*regionSizeX, startX + 3*regionSizeX, startY + regionSizeY, WORLDSIZE_Y, 7));
+    this->addRegion(new Region(startX + 3*regionSizeX, WORLDSIZE_X, startY + regionSizeY, WORLDSIZE_Y, 8));
 
 	for (auto agent : agents)
 	{
@@ -105,12 +105,12 @@ void Ped::Model::tick()
 	switch (implementation)
 	{
 
-	case CUDA:
-	{
-		// Call the CUDA implementation of tick (in tick_cuda.cpp)
-		tickCuda(agentsSoA, waypointsSoA);
-		break;
-	}
+	// case CUDA:
+	// {
+	// 	// Call the CUDA implementation of tick (in tick_cuda.cpp)
+	// 	tickCuda(agentsSoA, waypointsSoA);
+	// 	break;
+	// }
 
 	case VECTOR:
 	{
@@ -137,11 +137,9 @@ void Ped::Model::tick()
 			// Process each agent in this region
 			for (auto agent : agentsToProcess)
 			{
-				#pragma omp task shared(agent)
-				{
+				
 					agent->computeNextDesiredPosition();
 					move(agent);
-				}
 			}
 			
 		}
@@ -229,103 +227,111 @@ void Ped::Model::tick()
 /// Don't use this for Assignment 1!
 ///////////////////////////////////////////////
 
-// Moves the agent to the next desired position. If already taken, it will
-// be moved to a location close to it.
-void Ped::Model::move(Ped::Tagent *agent)
+// Moves the agent to the next desired position. If the desired cell is taken,
+// it tries alternative nearby cells.
+void Ped::Model::move(Tagent *agent)
 {
-	// Search for neighboring agents
-	set<const Ped::Tagent *> neighbors = getNeighbors(agent->getX(), agent->getY(), 2);
+    // Retrieve the current region for the agent.
+    Region* currRegion = this->getAgentCurrentRegion(agent);
+    
+    // Determine if the agent is near the region border.
+    // "Near" is defined here as being within 2 cells of any boundary.
+    bool nearBorder = false;
+    int x = agent->getX();
+    int y = agent->getY();
+    if (x <= currRegion->startX + 2 || x >= currRegion->endX - 2 ||
+        y <= currRegion->startY + 2 || y >= currRegion->endY - 2)
+    {
+        nearBorder = true;
+    }
+    
+	Region* targetRegion = determineTargetRegion(agent);
 
-	Region *currRegion = this->getAgentCurrentRegion(agent);
-	// Retrieve their positions
-	std::vector<std::pair<int, int>> takenPositions;
-	for (std::set<const Ped::Tagent *>::iterator neighborIt = neighbors.begin(); neighborIt != neighbors.end(); ++neighborIt)
-	{
-		std::pair<int, int> position((*neighborIt)->getX(), (*neighborIt)->getY());
-		takenPositions.push_back(position);
-	}
-
-	// Compute the three alternative positions that would bring the agent
-	// closer to his desiredPosition, starting with the desiredPosition itself
-	std::vector<std::pair<int, int>> prioritizedAlternatives;
-	std::pair<int, int> pDesired(agent->getDesiredX(), agent->getDesiredY());
-	prioritizedAlternatives.push_back(pDesired);
-
-	int diffX = pDesired.first - agent->getX();
-	int diffY = pDesired.second - agent->getY();
-	std::pair<int, int> p1, p2;
-	if (diffX == 0 || diffY == 0)
-	{
-		// Agent wants to walk straight to North, South, West or East
-		p1 = std::make_pair(pDesired.first + diffY, pDesired.second + diffX);
-		p2 = std::make_pair(pDesired.first - diffY, pDesired.second - diffX);
-	}
-	else
-	{
-		// Agent wants to walk diagonally
-		p1 = std::make_pair(pDesired.first, agent->getY());
-		p2 = std::make_pair(agent->getX(), pDesired.second);
-	}
-	prioritizedAlternatives.push_back(p1);
-	prioritizedAlternatives.push_back(p2);
-
-	switch (implementation)
-	{
-	case OMP:
-	{
-		// std::cout<<"RUNNING OMP\n";
-		//  Find the first empty alternative position
-		for (std::vector<pair<int, int>>::iterator it = prioritizedAlternatives.begin(); it != prioritizedAlternatives.end(); ++it)
-		{
-
-			// If the current position is not yet taken by any neighbor
-			if (std::find(takenPositions.begin(), takenPositions.end(), *it) == takenPositions.end())
-			{
-
-				if (currRegion->contains((*it).first, (*it).second))
-				{
-					// Set the agent's position
-					agent->setX((*it).first);
-					agent->setY((*it).second);
-				}
-				else
-				{
-					{
-						mtx.lock();
-						this->removeAgentFromRegion(agent);
-						agent->setX((*it).first);
-						agent->setY((*it).second);
-						this->placeAgentInRegion(agent);
-						mtx.unlock();
-					}
-				}
-
-				break;
-			}
+	if (targetRegion != currRegion) {
+		// Cross-region move: lock both regions.
+		if (currRegion->regionID < targetRegion->regionID) {
+			std::lock_guard<std::mutex> lockCurr(*(currRegion->lock));
+			std::lock_guard<std::mutex> lockTarget(*(targetRegion->lock));
+			performMove(agent, currRegion);
+		} else {
+			std::lock_guard<std::mutex> lockTarget(*(targetRegion->lock));
+			std::lock_guard<std::mutex> lockCurr(*(currRegion->lock));
+			performMove(agent, currRegion);
 		}
-
-		break;
-	}
-	default:
-	{
-		// std::cout<<"RUNNING SEQ\n";
-		//  Find the first empty alternative position
-		for (std::vector<pair<int, int>>::iterator it = prioritizedAlternatives.begin(); it != prioritizedAlternatives.end(); ++it)
-		{
-
-			// If the current position is not yet taken by any neighbor
-			if (std::find(takenPositions.begin(), takenPositions.end(), *it) == takenPositions.end())
-			{
-				// Set the agent's position
-				agent->setX((*it).first);
-				agent->setY((*it).second);
-
-				break;
-			}
+	} else {
+		// Move remains in the same region.
+		// Optionally, you might also check if the move is near the border
+		// and then lock even if it doesn't change regions.
+		if (nearBorder) {
+			std::lock_guard<std::mutex> guard(*(currRegion->lock));
+			performMove(agent, currRegion);
+		} else {
+			performMove(agent, currRegion);
 		}
 	}
-	}
+
 }
+
+// Helper function that implements the actual move logic.
+void Ped::Model::performMove(Tagent *agent, Region *currRegion)
+{
+    // Gather the positions of nearby agents.
+    std::set<const Tagent*> neighbors = getNeighbors(agent->getX(), agent->getY(), 2);
+    std::vector<std::pair<int, int>> takenPositions;
+    for (auto neighbor : neighbors)
+    {
+        takenPositions.push_back(std::make_pair(neighbor->getX(), neighbor->getY()));
+    }
+    
+    // Compute candidate positions (desired position plus two alternatives).
+    std::vector<std::pair<int, int>> prioritizedAlternatives;
+    std::pair<int, int> pDesired(agent->getDesiredX(), agent->getDesiredY());
+    prioritizedAlternatives.push_back(pDesired);
+    
+    int diffX = pDesired.first - agent->getX();
+    int diffY = pDesired.second - agent->getY();
+    std::pair<int, int> p1, p2;
+    if (diffX == 0 || diffY == 0)
+    {
+        // For straight movements, adjust using diffX/diffY.
+        p1 = std::make_pair(pDesired.first + diffY, pDesired.second + diffX);
+        p2 = std::make_pair(pDesired.first - diffY, pDesired.second - diffX);
+    }
+    else
+    {
+        // For diagonal movement, try altering one coordinate at a time.
+        p1 = std::make_pair(pDesired.first, agent->getY());
+        p2 = std::make_pair(agent->getX(), pDesired.second);
+    }
+    prioritizedAlternatives.push_back(p1);
+    prioritizedAlternatives.push_back(p2);
+    
+    // Try each candidate alternative until one is free.
+    for (auto alt : prioritizedAlternatives)
+    {
+        if (std::find(takenPositions.begin(), takenPositions.end(), alt) == takenPositions.end())
+        {
+            // If the candidate cell is inside the current region, update the agent's position.
+            if (currRegion->contains(alt.first, alt.second))
+            {
+                agent->setX(alt.first);
+                agent->setY(alt.second);
+            }
+            else
+            {
+                // If the move is out of the current region,
+                // remove the agent from the current region, update its position, and add it to the new region.
+                removeAgentFromRegion(agent);
+                agent->setX(alt.first);
+                agent->setY(alt.second);
+                placeAgentInRegion(agent);
+            }
+            break;
+        }
+    }
+}
+
+
 
 /// Returns the list of neighbors within dist of the point x/y. This
 /// can be the position of an agent, but it is not limited to this.
