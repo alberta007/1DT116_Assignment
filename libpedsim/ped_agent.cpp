@@ -72,3 +72,11 @@ Ped::Twaypoint* Ped::Tagent::getNextDestination() {
 
 	return nextDestination;
 }
+
+void Ped::Tagent::setX(int posX) {
+    x = posX;
+}
+
+void Ped::Tagent::setY(int posY) {
+    y = posY;
+}

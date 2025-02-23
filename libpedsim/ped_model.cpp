@@ -122,24 +122,26 @@ void Ped::Model::tick()
 
 	case OMP:
 	{
-// Parallelization using OpenMP where each region is processed in parallel
-// default(shared) for regions, but each thread has private agent pointers
-		
-		#pragma omp parallel for schedule(dynamic)
+		// Parallelization using OpenMP where each region is processed in parallel
+		// default(shared) for regions, but each thread has private agent pointers
+
+#pragma omp parallel for schedule(dynamic)
 		for (size_t i = 0; i < this->regions.size(); i++)
 		{
-			auto region = this->regions[i];
-			// Temporary vector
-			std::vector<Tagent *> agentsToProcess;
-			// std::cout << "\nProcessing region: " << region->regionid() << std::endl;
-			agentsToProcess = region->agentsInRegion; // Create copy
 
-			// Process each agent in this region
+			auto region = this->regions[i];
+			std::vector<Tagent *> agentsToProcess = region->agentsInRegion;
+
 			for (auto agent : agentsToProcess)
 			{
 				
 					agent->computeNextDesiredPosition();
+
+				agent->computeNextDesiredPosition();
+				{
+
 					move(agent);
+				}
 			}
 			
 		}
