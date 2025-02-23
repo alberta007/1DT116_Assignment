@@ -34,8 +34,8 @@ namespace Ped {
 		int getDesiredY() const { return desiredPositionY; }
 
 		// Sets the agent's position
-		void setX(int newX) { x = newX; }
-		void setY(int newY) { y = newY; }
+		void setX(int posX);
+		void setY(int posY);
 
 		// Update the position according to get closer
 		// to the current destination

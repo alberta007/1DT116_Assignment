@@ -95,9 +95,15 @@ for (XMLElement* agent = root->FirstChildElement("agent"); agent; agent = agent-
     tempAgents.clear();
 
     // Create the Tagent objects AND fill the SoA positions
+    std::set<std::pair<int, int>> positions;
     for (int i = 0; i < n; ++i) {
-        int xPos = (int)(x + rand() / (RAND_MAX / dx) - dx / 2);
-        int yPos = (int)(y + rand() / (RAND_MAX / dy) - dy / 2);
+        int xPos, yPos;
+        do {
+            xPos = (int)(x + rand() / (RAND_MAX / dx) - dx / 2);
+            yPos = (int)(y + rand() / (RAND_MAX / dy) - dy / 2);
+        } while (positions.find({xPos, yPos}) != positions.end());
+
+        positions.insert({xPos, yPos});
 
         // create a Tagent
         Ped::Tagent* a = new Ped::Tagent(xPos, yPos);
