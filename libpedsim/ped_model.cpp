@@ -103,6 +103,8 @@ void Ped::Model::tick() {
 		case CUDA: {
 			// Call the CUDA implementation of tick (in tick_cuda.cpp)
 			tickCuda(agentsSoA, waypointsSoA);
+
+			updateHeatmapSeq();
 			break;
 		}
 
@@ -111,6 +113,8 @@ void Ped::Model::tick() {
 			tickSoA(agentsSoA, waypointsSoA);
 
 			break;
+
+			updateHeatmapSeq();
 		}
 
 		case OMP:{
@@ -132,6 +136,8 @@ void Ped::Model::tick() {
 					move(agent); 
 				}
 			}
+
+			updateHeatmapSeq();
 
 			break;
 		}
@@ -165,8 +171,8 @@ void Ped::Model::tick() {
 			auto worker = [=](int start, int end) {
 				for (int i = start; i < end; i++) {
 					agents[i]->computeNextDesiredPosition();
-					agents[i]->setX(agents[i]->getDesiredX());
-					agents[i]->setY(agents[i]->getDesiredY());
+					
+					move(agents[i]);
 				}
 			};
 
@@ -183,6 +189,7 @@ void Ped::Model::tick() {
 				thread.join();
 			}
 
+			updateHeatmapSeq();
 			break;
 		}
 
@@ -199,6 +206,7 @@ void Ped::Model::tick() {
 				}
 			}
 
+			updateHeatmapSeq();
 			break;
 		}		
 	}
