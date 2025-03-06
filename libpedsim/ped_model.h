@@ -16,10 +16,13 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
+#include <mutex>
 
 #include "ped_agent.h"
 #include "soa_agent.h"
 #include "waypoints_soa.h"
+
 
 namespace Ped{
 	class Tagent;
@@ -32,14 +35,19 @@ namespace Ped{
 		public: 
 			int startX, endX, startY, endY;
 
+			std::unique_ptr<std::mutex> lock;
+
 			std::vector<Tagent*> agentsInRegion;
 
-			Region(int x1, int x2, int y1, int y2)
-				: startX(x1), endX(x2), startY(y1), endY(y2) {}
-
+			Region(int x1, int x2, int y1, int y2, int id)
+				: startX(x1), endX(x2), startY(y1), endY(y2), regionID(id), lock(std::make_unique<std::mutex>()) {}
+				int regionID;
 			bool contains(int x, int y) const {
 				return (x >= startX && x < endX && y >= startY && y < endY);
 			}
+			
+			int regionid() const { return regionID; }  // Add getter method
+
 
 			void addToAgentsInRegion(Tagent* agent) {
 				agentsInRegion.push_back(agent);
@@ -81,8 +89,9 @@ namespace Ped{
 		int const * const * getHeatmap() const { return blurred_heatmap; };
 		int getHeatmapSize() const;
 
-		void addRegion(const Region& region) {
-			regions.push_back(new Region(region));
+		void addRegion(Region* region)
+		{
+			regions.push_back(region);
 		}
 
 		void listRegions() const {
@@ -119,6 +128,40 @@ namespace Ped{
 			return NULL;
 		}
 
+		Region* getDestinationRegion(int x, int y) const {
+        for (auto region : regions) {
+            if (region->contains(x, y)) {
+                return region;
+            }
+        }
+        return NULL; // Should never happen if regions cover whole space
+    }
+
+		Region* getRegionForCoordinate(int x, int y) const {
+			for (auto region : regions) {
+				if (region->contains(x, y)) {
+					return region;
+				}
+			}
+			return NULL;
+		}
+
+		Region* determineTargetRegion(Tagent* agent) {
+		int desiredX = agent->getDesiredX();
+		int desiredY = agent->getDesiredY();
+		
+		// Iterate over regions (stored as pointers)
+		for (auto region : regions) {
+			if (region->contains(desiredX, desiredY)) {
+				return region;
+			}
+		}
+		
+		// If no region matches, default to the agent's current region.
+		return getAgentCurrentRegion(agent);
+	}
+
+
 	private:
 
 		// Denotes which implementation (sequential, parallel implementations..)
@@ -140,6 +183,9 @@ namespace Ped{
 
 		// Moves an agent towards its next position
 		void move(Ped::Tagent *agent);
+
+		// Performs the actual move
+		void performMove(Ped::Tagent *agent, Region *currRegion);
 
 		////////////
 		/// Everything below here won't be relevant until Assignment 3
