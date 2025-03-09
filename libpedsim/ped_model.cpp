@@ -31,6 +31,15 @@ const int WORLDSIZE_X = 160;
 const int WORLDSIZE_Y = 120;
 std::mutex mtx;
 
+
+
+
+extern "C" {
+    void updateHeatmapCuda(int* h_heatmap, int* h_scaledHeatmap, int* h_blurredHeatmap,
+                           int numAgents, int* h_desiredXs, int* h_desiredYs);
+}
+
+
 // Constructor: Sets the standard values for the Model when running SEQ, OMP or PTHREAD
 void Ped::Model::setup(std::vector<Ped::Tagent *> agentsInScenario, std::vector<Twaypoint *> destinationsInScenario, IMPLEMENTATION implementation)
 {
@@ -122,33 +131,41 @@ void Ped::Model::tick()
 
 	case OMP:
 	{
-		// Parallelization using OpenMP where each region is processed in parallel
-		// default(shared) for regions, but each thread has private agent pointers
-
+		// Parallelize agent movements with OpenMP 
 		#pragma omp parallel for schedule(dynamic)
 		for (size_t i = 0; i < this->regions.size(); i++)
 		{
-
 			auto region = this->regions[i];
-			std::vector<Tagent *> agentsToProcess = region->agentsInRegion;
-
+			std::vector<Tagent*> agentsToProcess = region->agentsInRegion;
 			for (auto agent : agentsToProcess)
 			{
-				
-					agent->computeNextDesiredPosition();
-
 				agent->computeNextDesiredPosition();
-				{
-
-					move(agent);
-				}
+				move(agent);
 			}
-			
 		}
-
-		updateHeatmapSeq();
+		
+		// Prepare temporary arrays for agents' desired positions.
+		int numAgents = static_cast<int>(agents.size());
+		int* h_desiredXs = new int[numAgents];
+		int* h_desiredYs = new int[numAgents];
+		
+		for (int i = 0; i < numAgents; i++)
+		{
+			h_desiredXs[i] = agents[i]->getDesiredX();
+			h_desiredYs[i] = agents[i]->getDesiredY();
+		}
+		
+		// Call the CUDA-based heatmap update.
+		updateHeatmapCuda(heatmap[0], scaled_heatmap[0], blurred_heatmap[0],
+						numAgents, h_desiredXs, h_desiredYs);
+		
+		// Clean up the temporary arrays.
+		delete[] h_desiredXs;
+		delete[] h_desiredYs;
+		
 		break;
 	}
+
 
 	case PTHREAD:
 	{
@@ -209,6 +226,7 @@ void Ped::Model::tick()
 
 	case SEQ:
 	{
+		// Process agent movements as before
 		for (auto region : this->regions)
 		{
 			for (auto agent : region->agentsInRegion)
@@ -216,15 +234,33 @@ void Ped::Model::tick()
 				// Get the next desired position
 				agent->computeNextDesiredPosition();
 				// Update the position
-				// agent->setX(agent->getDesiredX());
-				// agent->setY(agent->getDesiredY());
 				move(agent);
 			}
 		}
-
-		updateHeatmapSeq();
+		
+		// Prepare temporary arrays for agents' desired positions.
+		int numAgents = static_cast<int>(agents.size());
+		int* h_desiredXs = new int[numAgents];
+		int* h_desiredYs = new int[numAgents];
+		
+		for (int i = 0; i < numAgents; i++)
+		{
+			h_desiredXs[i] = agents[i]->getDesiredX();
+			h_desiredYs[i] = agents[i]->getDesiredY();
+		}
+		
+		// Call the CUDA-based heatmap update.
+		// Note: heatmap[0], scaled_heatmap[0], and blurred_heatmap[0] point to contiguous memory.
+		updateHeatmapCuda(heatmap[0], scaled_heatmap[0], blurred_heatmap[0],
+						numAgents, h_desiredXs, h_desiredYs);
+		
+		// Clean up the temporary arrays.
+		delete[] h_desiredXs;
+		delete[] h_desiredYs;
+		
 		break;
 	}
+
 	}
 }
 ////////////
