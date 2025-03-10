@@ -140,6 +140,8 @@ void Ped::Model::updateHeatmapSeq()
 			blurred_heatmap[i][j] = 0x00FF0000 | value << 24;
 		}
 	}
+
+	printf("BLURRED HEATMAP SEQ: %p\n", blurred_heatmap);
 }
 
 int Ped::Model::getHeatmapSize() const {

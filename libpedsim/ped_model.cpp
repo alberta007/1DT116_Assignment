@@ -25,6 +25,8 @@
 #include <cmath>
 #include <mutex>
 
+#include "heatmap_par.h"
+
 #include "soa_tick.h"
 
 const int WORLDSIZE_X = 160;
@@ -75,6 +77,7 @@ void Ped::Model::setup(std::vector<Ped::Tagent *> agentsInScenario, std::vector<
 	this->implementation = implementation;
 
 	// Set up heatmap (relevant for Assignment 4)
+
 	setupHeatmapSeq();
 }
 
@@ -124,29 +127,39 @@ void Ped::Model::tick()
 	{
 		// Parallelization using OpenMP where each region is processed in parallel
 		// default(shared) for regions, but each thread has private agent pointers
-
-		#pragma omp parallel for schedule(dynamic)
-		for (size_t i = 0; i < this->regions.size(); i++)
+		
+		#pragma omp parallel
 		{
 
-			auto region = this->regions[i];
-			std::vector<Tagent *> agentsToProcess = region->agentsInRegion;
-
-			for (auto agent : agentsToProcess)
+			#pragma omp for schedule(dynamic)
+			for (size_t i = 0; i < this->regions.size(); i++)
 			{
-				
-					agent->computeNextDesiredPosition();
 
-				agent->computeNextDesiredPosition();
+				auto region = this->regions[i];
+				std::vector<Tagent *> agentsToProcess = region->agentsInRegion;
+
+				for (auto agent : agentsToProcess)
 				{
-
+					agent->computeNextDesiredPosition();
 					move(agent);
 				}
 			}
-			
 		}
 
-		updateHeatmapSeq();
+		int numAgents = static_cast<int>(agents.size());
+		int* desiredXs = new int[numAgents];
+		int* desiredYs = new int[numAgents];
+		
+		for (int i = 0; i < numAgents; i++)
+		{
+			desiredXs[i] = agents[i]->getDesiredX();
+			desiredYs[i] = agents[i]->getDesiredY();
+		}
+		
+		updateHeatMapCuda(heatmap[0], scaled_heatmap[0], blurred_heatmap[0], desiredXs, desiredYs, numAgents);
+
+		delete[] desiredXs;
+		delete[] desiredYs;
 		break;
 	}
 
