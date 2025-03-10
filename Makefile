@@ -28,7 +28,7 @@ submission: clean
 	rm -rf submit
 
 run:
-	demo/demo scenario.xml 
+	demo/demo --omp scenario.xml 
 
 run_export:
 	demo/demo scenario.xml --export-trace --simd && \

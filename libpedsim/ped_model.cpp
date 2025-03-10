@@ -157,7 +157,6 @@ void Ped::Model::tick()
 		}
 		
 		updateHeatMapCuda(heatmap[0], scaled_heatmap[0], blurred_heatmap[0], desiredXs, desiredYs, numAgents);
-
 		delete[] desiredXs;
 		delete[] desiredYs;
 		break;
