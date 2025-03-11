@@ -78,7 +78,14 @@ void Ped::Model::setup(std::vector<Ped::Tagent *> agentsInScenario, std::vector<
 
 	// Set up heatmap (relevant for Assignment 4)
 
+	#ifndef NOCUDA
+    // If CUDA is enabled, allocate device memory once.
+    setupCudaHeatmap(static_cast<int>(agents.size()));
 	setupHeatmapSeq();
+	#else
+		// Use the sequential heatmap setup.
+		setupHeatmapSeq();
+	#endif
 }
 
 // Setup for SIMD implementation
@@ -99,7 +106,14 @@ void Ped::Model::setup(const AgentsSoA &agentsSoA,
 	this->implementation = implementation;
 
 	// Set up heatmap.
+	#ifndef NOCUDA
+    // If CUDA is enabled, allocate device memory once.
+    setupCudaHeatmap(static_cast<int>(agents.size()));
 	setupHeatmapSeq();
+	#else
+		// Use the sequential heatmap setup.
+		setupHeatmapSeq();
+	#endif
 }
 
 void Ped::Model::tick()
@@ -374,4 +388,9 @@ Ped::Model::~Model()
 {
 	// Clean up heatmap memory
 	freeHeatmapMemory();
+
+	#ifndef NOCUDA
+    // If CUDA is enabled, free the persistent device memory.
+    cleanupCudaHeatmap();
+	#endif
 }

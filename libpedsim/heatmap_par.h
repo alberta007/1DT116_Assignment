@@ -6,7 +6,21 @@
 #include <vector>
 #include "ped_agent.h"
 
-// Host function that launches the CUDA kernel.
-void updateHeatMapCuda(int *heatmap, int *scaled_heatmap, int *blurred_heatmap, int *desiredXs, int *desiredYs, int numAgents);
+#ifdef __cplusplus
+extern "C" {
+#endif
+// Allocate device memory once at the start.
+void setupCudaHeatmap(int numAgents);
+
+// Run the heatmap update (called every tick).
+void updateHeatMapCuda(int *heatmap, int *scaled_heatmap, int *blurred_heatmap, 
+                       int *desiredXs, int *desiredYs, int numAgents);
+
+// Free device memory at the end.
+void cleanupCudaHeatmap(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 

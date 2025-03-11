@@ -31,13 +31,13 @@ run:
 	demo/demo --omp scenario.xml 
 
 run_export:
-	demo/demo scenario.xml --export-trace --simd && \
+	demo/demo scenario.xml --export-trace --o && \
 	python3 visualizer/visualize_export.py export_trace.bin 
 
 run_timing:
-	demo/demo hugeScenario.xml --timing-mode --$(set_mode) --max-steps $(arg)
+	demo/demo scenario.xml --timing-mode --$(set_mode) --max-steps $(arg)
 
 valgrind: demo/demo
 	@echo "Running Valgrind..."
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes demo/demo hugeScenario.xml --timing-mode --simd --max-steps 100
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes demo/demo scenario.xml --timing-mode --o --max-steps 100
 

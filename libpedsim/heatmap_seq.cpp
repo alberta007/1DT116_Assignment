@@ -141,7 +141,7 @@ void Ped::Model::updateHeatmapSeq()
 		}
 	}
 
-	printf("BLURRED HEATMAP SEQ: %p\n", blurred_heatmap);
+	// printf("BLURRED HEATMAP SEQ: %p\n", blurred_heatmap);
 }
 
 int Ped::Model::getHeatmapSize() const {
